@@ -1,0 +1,702 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		307A62242F3EC9A5009C62B9 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 307A62232F3EC9A5009C62B9 /* WidgetKit.framework */; };
+		307A62262F3EC9A5009C62B9 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 307A62252F3EC9A5009C62B9 /* SwiftUI.framework */; };
+		307A62352F3EC9A6009C62B9 /* LibreHealthSyncLiveActivityExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 307A62212F3EC9A5009C62B9 /* LibreHealthSyncLiveActivityExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		307A62332F3EC9A6009C62B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 300B766F2F3D7E2100FD9079 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 307A62202F3EC9A5009C62B9;
+			remoteInfo = LibreHealthSyncLiveActivityExtension;
+		};
+		307A62DE2F422D18009C62B9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 300B766F2F3D7E2100FD9079 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 300B76762F3D7E2100FD9079;
+			remoteInfo = LibreHealthSync;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		307A623A2F3EC9A6009C62B9 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				307A62352F3EC9A6009C62B9 /* LibreHealthSyncLiveActivityExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		300B76772F3D7E2100FD9079 /* LibreHealthSync.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LibreHealthSync.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		307A62212F3EC9A5009C62B9 /* LibreHealthSyncLiveActivityExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = LibreHealthSyncLiveActivityExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		307A62232F3EC9A5009C62B9 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		307A62252F3EC9A5009C62B9 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		307A62D32F4148F6009C62B9 /* CLAUDE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CLAUDE.md; sourceTree = "<group>"; };
+		307A62DA2F422D18009C62B9 /* LibreHealthSyncTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LibreHealthSyncTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		300B76A32F3D7F4C00FD9079 /* Exceptions for "LibreHealthSync" folder in "LibreHealthSync" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 300B76762F3D7E2100FD9079 /* LibreHealthSync */;
+		};
+		307A62392F3EC9A6009C62B9 /* Exceptions for "LibreHealthSyncLiveActivity" folder in "LibreHealthSyncLiveActivityExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 307A62202F3EC9A5009C62B9 /* LibreHealthSyncLiveActivityExtension */;
+		};
+		307A62422F3EC9C4009C62B9 /* Exceptions for "LibreHealthSync" folder in "LibreHealthSyncLiveActivityExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Models/GlucoseLiveActivity.swift,
+			);
+			target = 307A62202F3EC9A5009C62B9 /* LibreHealthSyncLiveActivityExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		300B76792F3D7E2100FD9079 /* LibreHealthSync */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				300B76A32F3D7F4C00FD9079 /* Exceptions for "LibreHealthSync" folder in "LibreHealthSync" target */,
+				307A62422F3EC9C4009C62B9 /* Exceptions for "LibreHealthSync" folder in "LibreHealthSyncLiveActivityExtension" target */,
+			);
+			path = LibreHealthSync;
+			sourceTree = "<group>";
+		};
+		307A62272F3EC9A5009C62B9 /* LibreHealthSyncLiveActivity */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				307A62392F3EC9A6009C62B9 /* Exceptions for "LibreHealthSyncLiveActivity" folder in "LibreHealthSyncLiveActivityExtension" target */,
+			);
+			path = LibreHealthSyncLiveActivity;
+			sourceTree = "<group>";
+		};
+		307A62DB2F422D18009C62B9 /* LibreHealthSyncTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LibreHealthSyncTests;
+			sourceTree = "<group>";
+		};
+/* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		300B76742F3D7E2100FD9079 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		307A621E2F3EC9A5009C62B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				307A62262F3EC9A5009C62B9 /* SwiftUI.framework in Frameworks */,
+				307A62242F3EC9A5009C62B9 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		307A62D72F422D18009C62B9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		300B766E2F3D7E2100FD9079 = {
+			isa = PBXGroup;
+			children = (
+				307A62D32F4148F6009C62B9 /* CLAUDE.md */,
+				300B76792F3D7E2100FD9079 /* LibreHealthSync */,
+				307A62272F3EC9A5009C62B9 /* LibreHealthSyncLiveActivity */,
+				307A62DB2F422D18009C62B9 /* LibreHealthSyncTests */,
+				307A62222F3EC9A5009C62B9 /* Frameworks */,
+				300B76782F3D7E2100FD9079 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		300B76782F3D7E2100FD9079 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				300B76772F3D7E2100FD9079 /* LibreHealthSync.app */,
+				307A62212F3EC9A5009C62B9 /* LibreHealthSyncLiveActivityExtension.appex */,
+				307A62DA2F422D18009C62B9 /* LibreHealthSyncTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		307A62222F3EC9A5009C62B9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				307A62232F3EC9A5009C62B9 /* WidgetKit.framework */,
+				307A62252F3EC9A5009C62B9 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		300B76762F3D7E2100FD9079 /* LibreHealthSync */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 300B76822F3D7E2200FD9079 /* Build configuration list for PBXNativeTarget "LibreHealthSync" */;
+			buildPhases = (
+				300B76732F3D7E2100FD9079 /* Sources */,
+				300B76742F3D7E2100FD9079 /* Frameworks */,
+				300B76752F3D7E2100FD9079 /* Resources */,
+				307A623A2F3EC9A6009C62B9 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				307A62342F3EC9A6009C62B9 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				300B76792F3D7E2100FD9079 /* LibreHealthSync */,
+			);
+			name = LibreHealthSync;
+			packageProductDependencies = (
+			);
+			productName = LibreHealthSync;
+			productReference = 300B76772F3D7E2100FD9079 /* LibreHealthSync.app */;
+			productType = "com.apple.product-type.application";
+		};
+		307A62202F3EC9A5009C62B9 /* LibreHealthSyncLiveActivityExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 307A62362F3EC9A6009C62B9 /* Build configuration list for PBXNativeTarget "LibreHealthSyncLiveActivityExtension" */;
+			buildPhases = (
+				307A621D2F3EC9A5009C62B9 /* Sources */,
+				307A621E2F3EC9A5009C62B9 /* Frameworks */,
+				307A621F2F3EC9A5009C62B9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				307A62272F3EC9A5009C62B9 /* LibreHealthSyncLiveActivity */,
+			);
+			name = LibreHealthSyncLiveActivityExtension;
+			packageProductDependencies = (
+			);
+			productName = LibreHealthSyncLiveActivityExtension;
+			productReference = 307A62212F3EC9A5009C62B9 /* LibreHealthSyncLiveActivityExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		307A62D92F422D18009C62B9 /* LibreHealthSyncTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 307A62E02F422D18009C62B9 /* Build configuration list for PBXNativeTarget "LibreHealthSyncTests" */;
+			buildPhases = (
+				307A62D62F422D18009C62B9 /* Sources */,
+				307A62D72F422D18009C62B9 /* Frameworks */,
+				307A62D82F422D18009C62B9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				307A62DF2F422D18009C62B9 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				307A62DB2F422D18009C62B9 /* LibreHealthSyncTests */,
+			);
+			name = LibreHealthSyncTests;
+			packageProductDependencies = (
+			);
+			productName = LibreHealthSyncTests;
+			productReference = 307A62DA2F422D18009C62B9 /* LibreHealthSyncTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		300B766F2F3D7E2100FD9079 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2620;
+				LastUpgradeCheck = 2620;
+				TargetAttributes = {
+					300B76762F3D7E2100FD9079 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					307A62202F3EC9A5009C62B9 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					307A62D92F422D18009C62B9 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 300B76762F3D7E2100FD9079;
+					};
+				};
+			};
+			buildConfigurationList = 300B76722F3D7E2100FD9079 /* Build configuration list for PBXProject "LibreHealthSync" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 300B766E2F3D7E2100FD9079;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 300B76782F3D7E2100FD9079 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				300B76762F3D7E2100FD9079 /* LibreHealthSync */,
+				307A62202F3EC9A5009C62B9 /* LibreHealthSyncLiveActivityExtension */,
+				307A62D92F422D18009C62B9 /* LibreHealthSyncTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		300B76752F3D7E2100FD9079 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		307A621F2F3EC9A5009C62B9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		307A62D82F422D18009C62B9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		300B76732F3D7E2100FD9079 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		307A621D2F3EC9A5009C62B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		307A62D62F422D18009C62B9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		307A62342F3EC9A6009C62B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 307A62202F3EC9A5009C62B9 /* LibreHealthSyncLiveActivityExtension */;
+			targetProxy = 307A62332F3EC9A6009C62B9 /* PBXContainerItemProxy */;
+		};
+		307A62DF2F422D18009C62B9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 300B76762F3D7E2100FD9079 /* LibreHealthSync */;
+			targetProxy = 307A62DE2F422D18009C62B9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		300B76802F3D7E2200FD9079 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		300B76812F3D7E2200FD9079 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		300B76832F3D7E2200FD9079 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LibreHealthSync/LibreHealthSync.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LibreHealthSync/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "LibreHealth Sync reads your health data to check for existing glucose entries and avoid duplicates.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "LibreHealth Sync writes blood glucose readings from your LibreLinkUp account to Apple Health.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edmundrhudy.LibreHealthSync;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		300B76842F3D7E2200FD9079 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = LibreHealthSync/LibreHealthSync.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LibreHealthSync/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "LibreHealth Sync reads your health data to check for existing glucose entries and avoid duplicates.";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "LibreHealth Sync writes blood glucose readings from your LibreLinkUp account to Apple Health.";
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edmundrhudy.LibreHealthSync;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		307A62372F3EC9A6009C62B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LibreHealthSyncLiveActivity/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LibreHealthSyncLiveActivity;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edmundrhudy.LibreHealthSync.LibreHealthSyncLiveActivity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		307A62382F3EC9A6009C62B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = LibreHealthSyncLiveActivity/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = LibreHealthSyncLiveActivity;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 0.0.1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edmundrhudy.LibreHealthSync.LibreHealthSyncLiveActivity;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		307A62E12F422D18009C62B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edmundrhudy.LibreHealthSync.LibreHealthSyncTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LibreHealthSync.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LibreHealthSync";
+			};
+			name = Debug;
+		};
+		307A62E22F422D18009C62B9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.edmundrhudy.LibreHealthSync.LibreHealthSyncTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LibreHealthSync.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LibreHealthSync";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		300B76722F3D7E2100FD9079 /* Build configuration list for PBXProject "LibreHealthSync" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				300B76802F3D7E2200FD9079 /* Debug */,
+				300B76812F3D7E2200FD9079 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		300B76822F3D7E2200FD9079 /* Build configuration list for PBXNativeTarget "LibreHealthSync" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				300B76832F3D7E2200FD9079 /* Debug */,
+				300B76842F3D7E2200FD9079 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		307A62362F3EC9A6009C62B9 /* Build configuration list for PBXNativeTarget "LibreHealthSyncLiveActivityExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				307A62372F3EC9A6009C62B9 /* Debug */,
+				307A62382F3EC9A6009C62B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		307A62E02F422D18009C62B9 /* Build configuration list for PBXNativeTarget "LibreHealthSyncTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				307A62E12F422D18009C62B9 /* Debug */,
+				307A62E22F422D18009C62B9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 300B766F2F3D7E2100FD9079 /* Project object */;
+}

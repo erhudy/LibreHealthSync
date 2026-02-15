@@ -1,0 +1,15 @@
+import ActivityKit
+import Foundation
+
+struct GlucoseLiveActivityAttributes: ActivityAttributes {
+    /// Name of the LibreLinkUp connection (patient name) — static for the activity lifetime
+    let connectionName: String
+
+    struct ContentState: Codable, Hashable {
+        let glucoseMgPerDl: Double
+        let trendArrowRawValue: Int
+        let readingTimestamp: Date
+        let lastSyncDate: Date
+        let displayUnitRawValue: String
+    }
+}
