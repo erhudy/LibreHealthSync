@@ -8,9 +8,9 @@
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
+		<string>audio</string>
 		<string>fetch</string>
 		<string>processing</string>
-		<string>audio</string>
 	</array>
 </dict>
 </plist>

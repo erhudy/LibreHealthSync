@@ -1,6 +1,8 @@
 import ActivityKit
+import AVFoundation
 import BackgroundTasks
 import UIKit
+import os
 
 @MainActor
 final class BackgroundSyncManager {
@@ -8,14 +10,17 @@ final class BackgroundSyncManager {
 
     static let taskIdentifier = "com.librehealthsync.refresh"
 
-    private var backgroundTaskID: UIBackgroundTaskIdentifier = .invalid
+    private var audioPlayer: AVAudioPlayer?
     private var backgroundSyncTask: Task<Void, Never>?
+
+    public let logger = Logger(subsystem: "com.erhudy.librehealthsync", category: "BackgroundSyncManager")
 
     private init() {}
 
     // MARK: - BGTaskScheduler (infrequent fallback)
 
     func registerBackgroundTask() {
+        logger.notice("Calling BackgroundSyncManager.registerBackgroundTask")
         BGTaskScheduler.shared.register(
             forTaskWithIdentifier: Self.taskIdentifier,
             using: nil
@@ -28,6 +33,7 @@ final class BackgroundSyncManager {
     }
 
     func scheduleBackgroundRefresh() {
+        logger.notice("Calling BackgroundSyncManager.scheduleBackgroundRefresh")
         let request = BGAppRefreshTaskRequest(identifier: Self.taskIdentifier)
         request.earliestBeginDate = Date(timeIntervalSinceNow: 2 * 60)
         do {
@@ -38,10 +44,12 @@ final class BackgroundSyncManager {
     }
 
     func cancelPendingRefreshes() {
+        logger.notice("Calling BackgroundSyncManager.cancelPendingRefreshes")
         BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: Self.taskIdentifier)
     }
 
     private func handleBackgroundRefresh(_ task: BGAppRefreshTask) {
+        logger.notice("Calling BackgroundSyncManager.handleBackgroundRefresh")
         scheduleBackgroundRefresh()
 
         let syncTask = Task {
@@ -61,19 +69,14 @@ final class BackgroundSyncManager {
         }
     }
 
-    // MARK: - Continuous background execution
+    // MARK: - Silent audio background execution
 
-    /// Start a repeating sync loop that runs for as long as iOS grants background time.
-    /// Typically ~30 seconds, but can be longer depending on system conditions.
+    /// Start playing silent audio to keep the app alive indefinitely in the background,
+    /// then run a repeating sync loop at the given interval.
     func startBackgroundSyncLoop(intervalSeconds: Int) {
+        logger.notice("Calling BackgroundSyncManager.startBackgroundSyncLoop")
         stopBackgroundSyncLoop()
-
-        backgroundTaskID = UIApplication.shared.beginBackgroundTask { [weak self] in
-            // iOS is about to kill our background time — clean up
-            self?.stopBackgroundSyncLoop()
-        }
-
-        guard backgroundTaskID != .invalid else { return }
+        startSilentAudio()
 
         backgroundSyncTask = Task {
             while !Task.isCancelled {
@@ -94,18 +97,99 @@ final class BackgroundSyncManager {
     }
 
     func stopBackgroundSyncLoop() {
+        logger.notice("Calling BackgroundSyncManager.stopBackgroundSyncLoop")
         backgroundSyncTask?.cancel()
         backgroundSyncTask = nil
+        stopSilentAudio()
+    }
 
-        if backgroundTaskID != .invalid {
-            UIApplication.shared.endBackgroundTask(backgroundTaskID)
-            backgroundTaskID = .invalid
+    // MARK: - Silent audio helpers
+
+    private func startSilentAudio() {
+        logger.notice("Calling BackgroundSyncManager.startSilentAudio")
+        guard audioPlayer == nil else { return }
+
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(.playback, mode: .default, options: .mixWithOthers)
+            try audioSession.setActive(true)
+        } catch {
+            print("Failed to configure audio session: \(error)")
+            return
         }
+
+        // Generate a minimal silent WAV in memory: 1 second of silence at 16kHz mono 16-bit
+        guard let silentData = generateSilentWAV(durationSeconds: 1, sampleRate: 16000) else {
+            print("Failed to generate silent audio data")
+            return
+        }
+
+        do {
+            audioPlayer = try AVAudioPlayer(data: silentData)
+            audioPlayer?.numberOfLoops = -1 // loop forever
+            audioPlayer?.volume = 0
+            audioPlayer?.play()
+        } catch {
+            print("Failed to start silent audio player: \(error)")
+        }
+    }
+
+    private func stopSilentAudio() {
+        logger.notice("Calling BackgroundSyncManager.stopSilentAudio")
+        audioPlayer?.stop()
+        audioPlayer = nil
+
+        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
+    }
+
+    /// Generate a WAV file in memory containing silence.
+    private func generateSilentWAV(durationSeconds: Int, sampleRate: Int) -> Data? {
+        logger.notice("Calling BackgroundSyncManager.generateSilentWAV")
+        let channels = 1
+        let bitsPerSample = 16
+        let bytesPerSample = bitsPerSample / 8
+        let dataSize = sampleRate * durationSeconds * channels * bytesPerSample
+        let fileSize = 44 + dataSize // 44-byte WAV header + PCM data
+
+        var data = Data(capacity: fileSize)
+
+        // RIFF header
+        data.append(contentsOf: [UInt8]("RIFF".utf8))
+        appendUInt32LE(&data, UInt32(fileSize - 8))
+        data.append(contentsOf: [UInt8]("WAVE".utf8))
+
+        // fmt sub-chunk
+        data.append(contentsOf: [UInt8]("fmt ".utf8))
+        appendUInt32LE(&data, 16) // sub-chunk size (PCM)
+        appendUInt16LE(&data, 1)  // audio format (1 = PCM)
+        appendUInt16LE(&data, UInt16(channels))
+        appendUInt32LE(&data, UInt32(sampleRate))
+        appendUInt32LE(&data, UInt32(sampleRate * channels * bytesPerSample)) // byte rate
+        appendUInt16LE(&data, UInt16(channels * bytesPerSample)) // block align
+        appendUInt16LE(&data, UInt16(bitsPerSample))
+
+        // data sub-chunk
+        data.append(contentsOf: [UInt8]("data".utf8))
+        appendUInt32LE(&data, UInt32(dataSize))
+        data.append(Data(count: dataSize)) // all zeros = silence
+
+        return data
+    }
+
+    private func appendUInt32LE(_ data: inout Data, _ value: UInt32) {
+        var v = value.littleEndian
+        data.append(Data(bytes: &v, count: 4))
+    }
+
+    private func appendUInt16LE(_ data: inout Data, _ value: UInt16) {
+        var v = value.littleEndian
+        data.append(Data(bytes: &v, count: 2))
     }
 
     // MARK: - Shared sync logic
 
     private func performBackgroundSync() async throws -> SyncService.SyncResult {
+        logger.notice("Calling BackgroundSyncManager.performBackgroundSync")
         let apiService = LibreLinkUpService()
         let healthKitService = HealthKitService()
         let syncService = SyncService(api: apiService, healthKit: healthKitService, reloginHandler: { try await apiService.relogin() })
@@ -113,18 +197,20 @@ final class BackgroundSyncManager {
     }
 
     private func updateLiveActivity(with result: SyncService.SyncResult) {
+        logger.notice("Calling BackgroundSyncManager.updateLiveActivity")
         guard let glucose = result.currentGlucose else { return }
-
-        let liveActivityManager = LiveActivityManager()
-        liveActivityManager.reclaimExistingActivity()
 
         let displayUnitRaw = UserDefaults.standard.string(forKey: "displayUnit") ?? GlucoseDisplayUnit.mgdl.rawValue
         let displayUnit = GlucoseDisplayUnit(rawValue: displayUnitRaw) ?? .mgdl
 
-        if liveActivityManager.hasActiveActivity {
-            liveActivityManager.updateActivity(glucose: glucose, displayUnit: displayUnit)
+        if LiveActivityManager.shared.hasActiveActivity {
+            logger.notice("Live Activity was updated because active one exists")
+            LiveActivityManager.shared.updateActivity(glucose: glucose, displayUnit: displayUnit)
         } else if let connectionName = result.connectionName {
-            liveActivityManager.startActivity(connectionName: connectionName, displayUnit: displayUnit, glucose: glucose)
+            logger.notice("Live Activity was started")
+            LiveActivityManager.shared.startActivity(connectionName: connectionName, displayUnit: displayUnit, glucose: glucose)
+        } else {
+            logger.notice("Ran off end of LiveActivity block")
         }
     }
 }
