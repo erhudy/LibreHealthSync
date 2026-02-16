@@ -1,11 +1,15 @@
 import ActivityKit
+import os
 import SwiftUI
 import WidgetKit
 
 struct GlucoseLiveActivityWidget: Widget {
+    private static let logger = Logger(subsystem: "com.erhudy.librehealthsync.liveactivity", category: "GlucoseLiveActivityWidget")
+
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: GlucoseLiveActivityAttributes.self) { context in
             // Lock Screen / StandBy presentation
+            let _ = Self.logger.notice("GlucoseLiveActivityWidget lock screen closure called — glucoseMgPerDl: \(context.state.glucoseMgPerDl, privacy: .public), trendArrow: \(context.state.trendArrowRawValue, privacy: .public), readingTimestamp: \(context.state.readingTimestamp, privacy: .public), displayUnit: \(context.state.displayUnitRawValue, privacy: .public)")
             GlucoseLockScreenView(context: context)
                 .activityBackgroundTint(.black.opacity(0.7))
 
@@ -13,6 +17,7 @@ struct GlucoseLiveActivityWidget: Widget {
             DynamicIsland {
                 // Expanded regions
                 DynamicIslandExpandedRegion(.leading) {
+                    let _ = Self.logger.notice("GlucoseLiveActivityWidget dynamicIsland rendered — glucoseMgPerDl: \(context.state.glucoseMgPerDl, privacy: .public), trendArrow: \(context.state.trendArrowRawValue, privacy: .public), readingTimestamp: \(context.state.readingTimestamp, privacy: .public), displayUnit: \(context.state.displayUnitRawValue, privacy: .public)")
                     Text(GlucoseDisplayHelpers.formatGlucose(
                         mgPerDl: context.state.glucoseMgPerDl,
                         unitRaw: context.state.displayUnitRawValue
@@ -24,12 +29,6 @@ struct GlucoseLiveActivityWidget: Widget {
                 DynamicIslandExpandedRegion(.trailing) {
                     Text(GlucoseDisplayHelpers.trendSymbol(rawValue: context.state.trendArrowRawValue))
                         .font(.system(size: 28, weight: .medium))
-                }
-
-                DynamicIslandExpandedRegion(.center) {
-                    Text(context.attributes.connectionName)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
                 }
 
                 DynamicIslandExpandedRegion(.bottom) {

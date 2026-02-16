@@ -1,8 +1,11 @@
 import ActivityKit
+import os
 import SwiftUI
 import WidgetKit
 
 struct GlucoseLockScreenView: View {
+    private static let logger = Logger(subsystem: "com.erhudy.librehealthsync.liveactivity", category: "GlucoseLockScreenView")
+
     let context: ActivityViewContext<GlucoseLiveActivityAttributes>
 
     private var state: GlucoseLiveActivityAttributes.ContentState {
@@ -10,6 +13,7 @@ struct GlucoseLockScreenView: View {
     }
 
     var body: some View {
+        let _ = Self.logger.notice("GlucoseLockScreenView body called — glucoseMgPerDl: \(state.glucoseMgPerDl, privacy: .public), trendArrow: \(state.trendArrowRawValue, privacy: .public), readingTimestamp: \(state.readingTimestamp, privacy: .public), displayUnit: \(state.displayUnitRawValue, privacy: .public)")
         VStack(spacing: 8) {
             HStack(alignment: .center, spacing: 6) {
                 Text(GlucoseDisplayHelpers.formatGlucose(

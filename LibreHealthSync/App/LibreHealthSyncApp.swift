@@ -8,7 +8,7 @@ struct LibreHealthSyncApp: App {
     private let apiService: LibreLinkUpService
     private let healthKitService: HealthKitService
     private let syncService: SyncService
-    private let liveActivityManager = LiveActivityManager()
+    private let liveActivityManager = LiveActivityManager.shared
 
     init() {
         self.apiService = LibreLinkUpService()

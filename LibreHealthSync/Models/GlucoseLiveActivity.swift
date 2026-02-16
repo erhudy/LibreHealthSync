@@ -9,7 +9,6 @@ struct GlucoseLiveActivityAttributes: ActivityAttributes {
         let glucoseMgPerDl: Double
         let trendArrowRawValue: Int
         let readingTimestamp: Date
-        let lastSyncDate: Date
         let displayUnitRawValue: String
     }
 }

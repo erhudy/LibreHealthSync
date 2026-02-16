@@ -59,6 +59,11 @@ struct SettingsView: View {
                     Spacer()
                     Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown")
                         .foregroundStyle(.secondary)
+
+                    Text("Build")
+                    Spacer()
+                    Text(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown")
+                        .foregroundStyle(.secondary)
                 }
 
                 Text("This app uses the unofficial LibreLinkUp API. It may stop working if Abbott changes their API.")

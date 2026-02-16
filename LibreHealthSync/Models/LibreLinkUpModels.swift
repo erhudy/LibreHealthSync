@@ -112,7 +112,7 @@ struct SensorInfo: Decodable {
 
 // MARK: - Glucose Data
 
-struct GlucoseItem: Decodable {
+struct GlucoseItem: Decodable, CustomStringConvertible {
     let FactoryTimestamp: String?
     let Timestamp: String?
     let type: Int?
@@ -135,6 +135,10 @@ struct GlucoseItem: Decodable {
     var trendDirection: TrendArrowDirection? {
         guard let arrow = TrendArrow else { return nil }
         return TrendArrowDirection(rawValue: arrow)
+    }
+
+    var description: String {
+        return "Timestamp: \(String(describing: Timestamp)) | Value: \(String(describing: ValueInMgPerDl))"
     }
 }
 
