@@ -17,7 +17,7 @@ struct SettingsView: View {
                 }
             }
 
-            Section("Auto Refresh") {
+            Section {
                 Picker("Refresh Interval", selection: $state.autoRefreshIntervalSeconds) {
                     Text("1 minute").tag(60)
                     Text("2 minutes").tag(120)
@@ -25,6 +25,12 @@ struct SettingsView: View {
                     Text("10 minutes").tag(600)
                     Text("15 minutes").tag(900)
                 }
+
+                Toggle("Constant Background Sync", isOn: $state.aggressiveBackgroundSync)
+            } header: {
+                Text("Auto Refresh")
+            } footer: {
+                Text("Constant background sync plays a silent audio file to keep the app running continuously. This updates more frequently but uses more battery. When off, iOS controls how often the app refreshes in the background.")
             }
 
             Section("Account") {

@@ -29,11 +29,13 @@ struct LibreHealthSyncApp: App {
         .onChange(of: scenePhase) { _, newPhase in
             switch newPhase {
             case .background:
-                // Start a continuous sync loop for as long as iOS grants background time
-                BackgroundSyncManager.shared.startBackgroundSyncLoop(
-                    intervalSeconds: appState.autoRefreshIntervalSeconds
-                )
-                // Also schedule a BGAppRefreshTask as a fallback for after the loop expires
+                if appState.aggressiveBackgroundSync {
+                    // Start a continuous sync loop using silent audio to keep the app alive
+                    BackgroundSyncManager.shared.startBackgroundSyncLoop(
+                        intervalSeconds: appState.autoRefreshIntervalSeconds
+                    )
+                }
+                // Schedule a BGAppRefreshTask (primary when aggressive is off, fallback when on)
                 BackgroundSyncManager.shared.scheduleBackgroundRefresh()
             case .active:
                 // Foreground timer in SyncDashboardView takes over

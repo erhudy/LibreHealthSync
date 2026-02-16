@@ -17,8 +17,12 @@ struct FAQView: View {
                     answer: "iOS always removes Live Activities after 8 hours. This is a limitation imposed by iOS. Just reopen the app and background it again."
                 )
                 FAQItem(
+                    question: "Why doesn't the Live Activity update regularly?",
+                    answer: "iOS updates the value on the Live Activity when it feels like it, basically. In my experience, it usually updates every 10-15 minutes."
+                )
+                FAQItem(
                     question: "Why is this not on the App Store?",
-                    answer: "For liability reasons and because it would likely be rejected, because it declares that it needs the Audio playback Background Capability, in order to make iOS update the Live Activity every minute."
+                    answer: "For liability reasons and because it would likely be rejected, because it declares that it needs the Audio playback Background Capability, in order to make iOS update from LibreLinkUp on an exacting schedule."
                 )
             }
         }

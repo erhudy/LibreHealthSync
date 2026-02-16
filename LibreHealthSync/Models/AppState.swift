@@ -33,6 +33,11 @@ final class AppState {
             UserDefaults.standard.set(autoRefreshIntervalSeconds, forKey: "autoRefreshIntervalSeconds")
         }
     }
+    var aggressiveBackgroundSync: Bool = true {
+        didSet {
+            UserDefaults.standard.set(aggressiveBackgroundSync, forKey: "aggressiveBackgroundSync")
+        }
+    }
 
     init() {
         // Restore persisted preferences
@@ -43,6 +48,9 @@ final class AppState {
         let storedInterval = UserDefaults.standard.integer(forKey: "autoRefreshIntervalSeconds")
         if storedInterval > 0 {
             autoRefreshIntervalSeconds = storedInterval
+        }
+        if UserDefaults.standard.object(forKey: "aggressiveBackgroundSync") != nil {
+            aggressiveBackgroundSync = UserDefaults.standard.bool(forKey: "aggressiveBackgroundSync")
         }
 
         // Restore terms acceptance
