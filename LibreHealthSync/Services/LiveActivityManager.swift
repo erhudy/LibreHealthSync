@@ -11,7 +11,7 @@ final class LiveActivityManager {
     public let logger = Logger(subsystem: "com.erhudy.librehealthsync", category: "LiveActivityManager")
 
     func startActivity(connectionName: String, displayUnit: GlucoseDisplayUnit, glucose: GlucoseItem) {
-        logger.notice("Calling LiveActivityManager.startActivity")
+        logger.trace("Calling LiveActivityManager.startActivity")
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         guard let mgPerDl = glucose.mgPerDl,
               let timestamp = glucose.factoryTimestamp,
@@ -37,7 +37,7 @@ final class LiveActivityManager {
     }
 
     func updateActivity(glucose: GlucoseItem, displayUnit: GlucoseDisplayUnit) {
-        logger.notice("Calling LiveActivityManager.updateActivity with glucose \(glucose.mgPerDl as NSObject?, privacy: .public)")
+        logger.trace("Calling LiveActivityManager.updateActivity")
         if currentActivity == nil { return }
         guard let mgPerDl = glucose.mgPerDl,
               let timestamp = glucose.factoryTimestamp,
@@ -51,34 +51,29 @@ final class LiveActivityManager {
         )
 
         Task {
-            logger.notice("In Task in updateActivity")
+            logger.trace("In Task in updateActivity")
 
             // Log all live activities to check for duplicates
             let allActivities = Activity<GlucoseLiveActivityAttributes>.activities
-            logger.notice("Total live activities: \(allActivities.count, privacy: .public)")
+            logger.trace("Total live activities: \(allActivities.count, privacy: .public)")
             for (index, act) in allActivities.enumerated() {
-                logger.notice("  Activity[\(index, privacy: .public)] id=\(act.id, privacy: .public) state=\(String(describing: act.activityState), privacy: .public)")
+                logger.trace("  Activity[\(index, privacy: .public)] id=\(act.id, privacy: .public) state=\(String(describing: act.activityState), privacy: .public)")
             }
 
             guard let activity = currentActivity else {
                 logger.error("currentActivity became nil before update")
                 return
             }
-            logger.notice("Updating activity id=\(activity.id, privacy: .public) activityState=\(String(describing: activity.activityState), privacy: .public)")
+            logger.trace("Updating activity id=\(activity.id, privacy: .public) activityState=\(String(describing: activity.activityState), privacy: .public)")
 
             let staleDate = Date().addingTimeInterval(5 * 60)
             let content = ActivityContent(state: state, staleDate: staleDate)
             await activity.update(content)
-
-            // Check state after update
-            logger.notice("After update: activityState=\(String(describing: activity.activityState), privacy: .public)")
-            logger.notice("After update: content.state.glucoseMgPerDl=\(activity.content.state.glucoseMgPerDl, privacy: .public)")
-            logger.notice("After update: content.state.readingTimestamp=\(activity.content.state.readingTimestamp, privacy: .public)")
         }
     }
 
     func endActivity() {
-        logger.notice("Calling LiveActivityManager.endActivity")
+        logger.trace("Calling LiveActivityManager.endActivity")
         guard let activity = currentActivity else { return }
         let state = activity.content.state
         Task {
@@ -88,14 +83,14 @@ final class LiveActivityManager {
     }
 
     func reclaimExistingActivity() {
-        logger.notice("Calling LiveActivityManager.reclaimExistingActivity")
+        logger.trace("Calling LiveActivityManager.reclaimExistingActivity")
         if let existing = Activity<GlucoseLiveActivityAttributes>.activities.first {
             currentActivity = existing
         }
     }
 
     var hasActiveActivity: Bool {
-        logger.notice("Activity active: \(self.currentActivity != nil)")
+        logger.trace("Activity active: \(self.currentActivity != nil)")
         return currentActivity != nil
     }
 }

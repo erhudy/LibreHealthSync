@@ -13,7 +13,7 @@ struct GlucoseLockScreenView: View {
     }
 
     var body: some View {
-        let _ = Self.logger.notice("GlucoseLockScreenView body called — glucoseMgPerDl: \(state.glucoseMgPerDl, privacy: .public), trendArrow: \(state.trendArrowRawValue, privacy: .public), readingTimestamp: \(state.readingTimestamp, privacy: .public), displayUnit: \(state.displayUnitRawValue, privacy: .public)")
+        let _ = Self.logger.trace("GlucoseLockScreenView body called — glucoseMgPerDl: \(state.glucoseMgPerDl, privacy: .public), trendArrow: \(state.trendArrowRawValue, privacy: .public), readingTimestamp: \(state.readingTimestamp, privacy: .public), displayUnit: \(state.displayUnitRawValue, privacy: .public)")
         VStack(spacing: 8) {
             HStack(alignment: .center, spacing: 6) {
                 Text(GlucoseDisplayHelpers.formatGlucose(

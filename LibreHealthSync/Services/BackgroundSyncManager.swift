@@ -20,7 +20,7 @@ final class BackgroundSyncManager {
     // MARK: - BGTaskScheduler (infrequent fallback)
 
     func registerBackgroundTask() {
-        logger.notice("Calling BackgroundSyncManager.registerBackgroundTask")
+        logger.trace("Calling BackgroundSyncManager.registerBackgroundTask")
         BGTaskScheduler.shared.register(
             forTaskWithIdentifier: Self.taskIdentifier,
             using: nil
@@ -33,7 +33,7 @@ final class BackgroundSyncManager {
     }
 
     func scheduleBackgroundRefresh() {
-        logger.notice("Calling BackgroundSyncManager.scheduleBackgroundRefresh")
+        logger.trace("Calling BackgroundSyncManager.scheduleBackgroundRefresh")
         let request = BGAppRefreshTaskRequest(identifier: Self.taskIdentifier)
         request.earliestBeginDate = Date(timeIntervalSinceNow: 2 * 60)
         do {
@@ -44,12 +44,12 @@ final class BackgroundSyncManager {
     }
 
     func cancelPendingRefreshes() {
-        logger.notice("Calling BackgroundSyncManager.cancelPendingRefreshes")
+        logger.trace("Calling BackgroundSyncManager.cancelPendingRefreshes")
         BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: Self.taskIdentifier)
     }
 
     private func handleBackgroundRefresh(_ task: BGAppRefreshTask) {
-        logger.notice("Calling BackgroundSyncManager.handleBackgroundRefresh")
+        logger.trace("Calling BackgroundSyncManager.handleBackgroundRefresh")
         scheduleBackgroundRefresh()
 
         let syncTask = Task {
@@ -74,7 +74,7 @@ final class BackgroundSyncManager {
     /// Start playing silent audio to keep the app alive indefinitely in the background,
     /// then run a repeating sync loop at the given interval.
     func startBackgroundSyncLoop(intervalSeconds: Int) {
-        logger.notice("Calling BackgroundSyncManager.startBackgroundSyncLoop")
+        logger.trace("Calling BackgroundSyncManager.startBackgroundSyncLoop")
         stopBackgroundSyncLoop()
         startSilentAudio()
 
@@ -97,7 +97,7 @@ final class BackgroundSyncManager {
     }
 
     func stopBackgroundSyncLoop() {
-        logger.notice("Calling BackgroundSyncManager.stopBackgroundSyncLoop")
+        logger.trace("Calling BackgroundSyncManager.stopBackgroundSyncLoop")
         backgroundSyncTask?.cancel()
         backgroundSyncTask = nil
         stopSilentAudio()
@@ -106,7 +106,7 @@ final class BackgroundSyncManager {
     // MARK: - Silent audio helpers
 
     private func startSilentAudio() {
-        logger.notice("Calling BackgroundSyncManager.startSilentAudio")
+        logger.trace("Calling BackgroundSyncManager.startSilentAudio")
         guard audioPlayer == nil else { return }
 
         let audioSession = AVAudioSession.sharedInstance()
@@ -135,7 +135,7 @@ final class BackgroundSyncManager {
     }
 
     private func stopSilentAudio() {
-        logger.notice("Calling BackgroundSyncManager.stopSilentAudio")
+        logger.trace("Calling BackgroundSyncManager.stopSilentAudio")
         audioPlayer?.stop()
         audioPlayer = nil
 
@@ -144,7 +144,7 @@ final class BackgroundSyncManager {
 
     /// Generate a WAV file in memory containing silence.
     private func generateSilentWAV(durationSeconds: Int, sampleRate: Int) -> Data? {
-        logger.notice("Calling BackgroundSyncManager.generateSilentWAV")
+        logger.trace("Calling BackgroundSyncManager.generateSilentWAV")
         let channels = 1
         let bitsPerSample = 16
         let bytesPerSample = bitsPerSample / 8
@@ -189,7 +189,7 @@ final class BackgroundSyncManager {
     // MARK: - Shared sync logic
 
     private func performBackgroundSync() async throws -> SyncService.SyncResult {
-        logger.notice("Calling BackgroundSyncManager.performBackgroundSync")
+        logger.trace("Calling BackgroundSyncManager.performBackgroundSync")
         let apiService = LibreLinkUpService()
         let healthKitService = HealthKitService()
         let syncService = SyncService(api: apiService, healthKit: healthKitService, reloginHandler: { try await apiService.relogin() })
@@ -197,20 +197,20 @@ final class BackgroundSyncManager {
     }
 
     private func updateLiveActivity(with result: SyncService.SyncResult) {
-        logger.notice("Calling BackgroundSyncManager.updateLiveActivity")
+        logger.trace("Calling BackgroundSyncManager.updateLiveActivity")
         guard let glucose = result.currentGlucose else { return }
 
         let displayUnitRaw = UserDefaults.standard.string(forKey: "displayUnit") ?? GlucoseDisplayUnit.mgdl.rawValue
         let displayUnit = GlucoseDisplayUnit(rawValue: displayUnitRaw) ?? .mgdl
 
         if LiveActivityManager.shared.hasActiveActivity {
-            logger.notice("Live Activity was updated because active one exists")
+            logger.trace("Live Activity was updated because active one exists")
             LiveActivityManager.shared.updateActivity(glucose: glucose, displayUnit: displayUnit)
         } else if let connectionName = result.connectionName {
-            logger.notice("Live Activity was started")
+            logger.trace("Live Activity was started")
             LiveActivityManager.shared.startActivity(connectionName: connectionName, displayUnit: displayUnit, glucose: glucose)
         } else {
-            logger.notice("Ran off end of LiveActivity block")
+            logger.trace("Ran off end of LiveActivity block")
         }
     }
 }
