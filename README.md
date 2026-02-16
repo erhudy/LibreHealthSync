@@ -2,6 +2,10 @@
 
 LibreHealthSync is a small app I created to fill in a couple of feature gaps in Abbott's official app, namely writing blood glucose data to HealthKit, and providing a Live Activity widget that periodically updates. These features were borrowed from [GlucoseDirect](https://github.com/creepymonster/GlucoseDirect), but this app works alongside the regular Abbott app instead of attempting to replace it.
 
+## Screenshots
+
+![Blood glucose view in Health](screenshots/health-small.png) ![Live Activity on lock screen](screenshots/liveactivity-small.png) ![Sync view](screenshots/syncview-small.png)
+
 ## Disclaimers
 
 **Unofficial API:** This app uses an unofficial, reverse-engineered Abbott LibreLinkUp API. It is not affiliated with, endorsed by, or supported by Abbott Laboratories. The API may change or stop working at any time without notice.
