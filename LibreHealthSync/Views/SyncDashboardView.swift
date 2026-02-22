@@ -94,10 +94,11 @@ struct SyncDashboardView: View {
                     Text(date, format: .dateTime.hour().minute().second())
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                    Text(date, style: .relative)
+
+                    let relativeDate = Text(date, style: .relative)
                         .font(.caption2)
                         .foregroundStyle(.tertiary)
-                    + Text(" ago")
+                    Text("\(relativeDate) ago")
                         .font(.caption2)
                         .foregroundStyle(.tertiary)
                 }
@@ -163,8 +164,8 @@ struct SyncDashboardView: View {
                 HStack {
                     Text("Last sync:")
                     Spacer()
-                    Text(lastSync, style: .relative)
-                    + Text(" ago")
+                    let lastSync = Text(lastSync, style: .relative)
+                    Text("\(lastSync ) ago")
                 }
                 .font(.subheadline)
 
@@ -268,7 +269,7 @@ struct SyncDashboardView: View {
                         glucose: glucose
                     )
                 } else {
-                    liveActivityManager.updateActivity(
+                    await liveActivityManager.updateActivity(
                         glucose: glucose,
                         displayUnit: appState.displayUnit
                     )

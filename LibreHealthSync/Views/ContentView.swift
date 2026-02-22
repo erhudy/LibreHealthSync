@@ -21,7 +21,9 @@ struct ContentView: View {
         .animation(.default, value: appState.isLoggedIn)
         .onChange(of: appState.isLoggedIn) { _, isLoggedIn in
             if !isLoggedIn {
-                liveActivityManager.endActivity()
+                Task {
+                    await liveActivityManager.endActivity()
+                }
             }
         }
     }

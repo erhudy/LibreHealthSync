@@ -1,7 +1,7 @@
 import CryptoKit
 import Foundation
 
-enum LibreLinkUpError: LocalizedError {
+nonisolated enum LibreLinkUpError: LocalizedError {
     case invalidURL
     case invalidResponse
     case authenticationFailed(String)
@@ -46,7 +46,7 @@ actor LibreLinkUpService: GlucoseDataProvider {
     private var token: String?
     private var userId: String?
 
-    private static let apiHeaders: [String: String] = [
+    nonisolated private static let apiHeaders: [String: String] = [
         "product": "llu.android",
         "version": "4.16.0",
         "Content-Type": "application/json",

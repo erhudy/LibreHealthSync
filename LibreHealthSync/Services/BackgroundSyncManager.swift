@@ -35,11 +35,11 @@ final class BackgroundSyncManager {
     func scheduleBackgroundRefresh() {
         logger.trace("Calling BackgroundSyncManager.scheduleBackgroundRefresh")
         let request = BGAppRefreshTaskRequest(identifier: Self.taskIdentifier)
-        request.earliestBeginDate = Date(timeIntervalSinceNow: 2 * 60)
+        request.earliestBeginDate = Date(timeIntervalSinceNow: TimeInterval(UserDefaults.standard.integer(forKey: "autoRefreshIntervalSeconds")))
         do {
             try BGTaskScheduler.shared.submit(request)
         } catch {
-            print("Failed to schedule background refresh: \(error)")
+            logger.error("Failed to schedule background refresh: \(error)")
         }
     }
 
@@ -55,10 +55,10 @@ final class BackgroundSyncManager {
         let syncTask = Task {
             do {
                 let result = try await performBackgroundSync()
-                updateLiveActivity(with: result)
+                await updateLiveActivity(with: result)
                 task.setTaskCompleted(success: true)
             } catch {
-                print("Background refresh sync failed: \(error)")
+                logger.error("Background refresh sync failed: \(error)")
                 task.setTaskCompleted(success: false)
             }
         }
@@ -82,9 +82,9 @@ final class BackgroundSyncManager {
             while !Task.isCancelled {
                 do {
                     let result = try await performBackgroundSync()
-                    updateLiveActivity(with: result)
+                    await updateLiveActivity(with: result)
                 } catch {
-                    print("Background sync loop iteration failed: \(error)")
+                    logger.error("Background sync loop iteration failed: \(error)")
                 }
 
                 do {
@@ -114,13 +114,13 @@ final class BackgroundSyncManager {
             try audioSession.setCategory(.playback, mode: .default, options: .mixWithOthers)
             try audioSession.setActive(true)
         } catch {
-            print("Failed to configure audio session: \(error)")
+            logger.error("Failed to configure audio session: \(error)")
             return
         }
 
         // Generate a minimal silent WAV in memory: 1 second of silence at 16kHz mono 16-bit
         guard let silentData = generateSilentWAV(durationSeconds: 1, sampleRate: 16000) else {
-            print("Failed to generate silent audio data")
+            logger.error("Failed to generate silent audio data")
             return
         }
 
@@ -130,7 +130,7 @@ final class BackgroundSyncManager {
             audioPlayer?.volume = 0
             audioPlayer?.play()
         } catch {
-            print("Failed to start silent audio player: \(error)")
+            logger.error("Failed to start silent audio player: \(error)")
         }
     }
 
@@ -196,7 +196,7 @@ final class BackgroundSyncManager {
         return try await syncService.sync()
     }
 
-    private func updateLiveActivity(with result: SyncService.SyncResult) {
+    private func updateLiveActivity(with result: SyncService.SyncResult) async {
         logger.trace("Calling BackgroundSyncManager.updateLiveActivity")
         guard let glucose = result.currentGlucose else { return }
 
@@ -205,7 +205,7 @@ final class BackgroundSyncManager {
 
         if LiveActivityManager.shared.hasActiveActivity {
             logger.trace("Live Activity was updated because active one exists")
-            LiveActivityManager.shared.updateActivity(glucose: glucose, displayUnit: displayUnit)
+            await LiveActivityManager.shared.updateActivity(glucose: glucose, displayUnit: displayUnit)
         } else if let connectionName = result.connectionName {
             logger.trace("Live Activity was started")
             LiveActivityManager.shared.startActivity(connectionName: connectionName, displayUnit: displayUnit, glucose: glucose)

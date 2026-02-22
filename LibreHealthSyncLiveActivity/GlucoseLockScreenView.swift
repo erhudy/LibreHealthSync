@@ -32,7 +32,10 @@ struct GlucoseLockScreenView: View {
 
                 Spacer()
 
-                Text(state.readingTimestamp, style: .time).font(.caption).foregroundStyle(.secondary)
+                let relativeTime = Text(state.readingTimestamp, style: .relative)
+                let absoluteTime = Text(state.readingTimestamp, style: .time)
+
+                Text("\(relativeTime) ago (\(absoluteTime))").font(.default).foregroundStyle(.primary).multilineTextAlignment(.trailing)
             }
         }
         .padding()
