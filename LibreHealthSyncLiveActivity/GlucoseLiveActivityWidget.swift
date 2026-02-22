@@ -37,10 +37,8 @@ struct GlucoseLiveActivityWidget: Widget {
                             .font(.caption2)
                             .foregroundStyle(.secondary)
 
-                        Text(context.state.readingTimestamp, style: .relative)
-                            .font(.caption2)
-                            .foregroundStyle(.secondary)
-                        + Text(" ago")
+                        let timestamp = Text(context.state.readingTimestamp, style: .relative)
+                        Text("\(timestamp) ago")
                             .font(.caption2)
                             .foregroundStyle(.secondary)
                     }

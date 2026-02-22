@@ -2,7 +2,7 @@ import Foundation
 
 // MARK: - API Regions
 
-enum LibreLinkUpRegion: String, CaseIterable, Identifiable, Codable {
+nonisolated enum LibreLinkUpRegion: String, CaseIterable, Identifiable, Codable {
     case us = "api-us.libreview.io"
 //    only deal with US at the moment because I have no way of testing other regions
 //    case eu = "api-eu.libreview.io"
@@ -46,12 +46,12 @@ enum LibreLinkUpRegion: String, CaseIterable, Identifiable, Codable {
 
 // MARK: - Login
 
-struct LoginRequest: Encodable {
+nonisolated struct LoginRequest: Encodable {
     let email: String
     let password: String
 }
 
-struct LoginResponse: Decodable {
+nonisolated struct LoginResponse: Decodable {
     let status: Int
     let data: LoginData?
     let ticket: AuthTicket?
@@ -59,21 +59,21 @@ struct LoginResponse: Decodable {
     let region: String?
 }
 
-struct LoginData: Decodable {
+nonisolated struct LoginData: Decodable {
     let user: UserInfo?
     let authTicket: AuthTicket?
     let redirect: Bool?
     let region: String?
 }
 
-struct UserInfo: Decodable {
+nonisolated struct UserInfo: Decodable {
     let id: String
     let firstName: String?
     let lastName: String?
     let email: String?
 }
 
-struct AuthTicket: Decodable {
+nonisolated struct AuthTicket: Decodable {
     let token: String
     let expires: Int
     let duration: Int
@@ -81,13 +81,13 @@ struct AuthTicket: Decodable {
 
 // MARK: - Connections
 
-struct ConnectionsResponse: Decodable {
+nonisolated struct ConnectionsResponse: Decodable {
     let status: Int
     let data: [Connection]?
     let ticket: AuthTicket?
 }
 
-struct Connection: Decodable, Identifiable {
+nonisolated struct Connection: Decodable, Identifiable {
     let id: String
     let patientId: String
     let firstName: String
@@ -105,14 +105,14 @@ struct Connection: Decodable, Identifiable {
     }
 }
 
-struct SensorInfo: Decodable {
+nonisolated struct SensorInfo: Decodable {
     let deviceId: String?
     let sn: String?
 }
 
 // MARK: - Glucose Data
 
-struct GlucoseItem: Decodable, CustomStringConvertible {
+nonisolated struct GlucoseItem: Decodable, CustomStringConvertible {
     let FactoryTimestamp: String?
     let Timestamp: String?
     let type: Int?
@@ -142,7 +142,7 @@ struct GlucoseItem: Decodable, CustomStringConvertible {
     }
 }
 
-enum TrendArrowDirection: Int, CaseIterable, Sendable {
+nonisolated enum TrendArrowDirection: Int, CaseIterable, Sendable {
     case notDetermined = 0
     case fallingQuickly = 1
     case falling = 2
@@ -175,13 +175,13 @@ enum TrendArrowDirection: Int, CaseIterable, Sendable {
 
 // MARK: - Graph / History
 
-struct GraphResponse: Decodable {
+nonisolated struct GraphResponse: Decodable {
     let status: Int
     let data: GraphData?
     let ticket: AuthTicket?
 }
 
-struct GraphData: Decodable {
+nonisolated struct GraphData: Decodable {
     let connection: Connection?
     let activeSensors: [SensorInfo]?
     let graphData: [GlucoseItem]?
@@ -189,7 +189,7 @@ struct GraphData: Decodable {
 
 // MARK: - Timestamp Parsing
 
-enum LibreLinkUpTimestamp {
+nonisolated enum LibreLinkUpTimestamp {
     /// Parses the FactoryTimestamp format: "M/d/yyyy h:mm:ss a" in UTC
     static func parse(_ timestamp: String) -> Date? {
         let formatter = DateFormatter()

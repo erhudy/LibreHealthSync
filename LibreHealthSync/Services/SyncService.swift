@@ -82,7 +82,7 @@ actor SyncService {
 
         // Write new readings to HealthKit
         // Extract sendable data from GlucoseItems on MainActor
-        let readings = await HealthKitService.extractReadings(from: newReadings)
+        let readings = HealthKitService.extractReadings(from: newReadings)
         let writtenCount = try await healthKit.writeGlucoseReadings(readings)
 
         // Update last synced timestamp to the newest reading we wrote

@@ -1,7 +1,7 @@
 import Foundation
 import Security
 
-struct KeychainService {
+nonisolated struct KeychainService: Sendable {
     private let service = "com.librehealthsync"
 
     private enum Key: String {
