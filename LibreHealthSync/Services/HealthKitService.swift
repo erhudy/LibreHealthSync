@@ -20,7 +20,7 @@ actor HealthKitService: GlucoseWriter {
 
     /// Extracts sendable glucose readings from GlucoseItems.
     /// Call this on the MainActor before passing to the actor.
-    nonisolated static func extractReadings(from items: [GlucoseItem]) -> [GlucoseReading] {
+    static func extractReadings(from items: [GlucoseItem]) -> [GlucoseReading] {
         items.compactMap { item in
             guard let mgPerDl = item.mgPerDl,
                   let timestamp = item.factoryTimestamp else {

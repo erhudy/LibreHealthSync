@@ -29,18 +29,22 @@ struct LibreHealthSyncApp: App {
         .onChange(of: scenePhase) { _, newPhase in
             switch newPhase {
             case .background:
-                if appState.aggressiveBackgroundSync {
-                    // Start a continuous sync loop using silent audio to keep the app alive
-                    BackgroundSyncManager.shared.startBackgroundSyncLoop(
-                        intervalSeconds: appState.autoRefreshIntervalSeconds
-                    )
+                Task {
+                    if appState.aggressiveBackgroundSync {
+                        // Start a continuous sync loop using silent audio to keep the app alive
+                        await BackgroundSyncManager.shared.startBackgroundSyncLoop(
+                            intervalSeconds: appState.autoRefreshIntervalSeconds
+                        )
+                    }
+                    // Schedule a BGAppRefreshTask (primary when aggressive is off, fallback when on)
+                    await BackgroundSyncManager.shared.scheduleBackgroundRefresh()
                 }
-                // Schedule a BGAppRefreshTask (primary when aggressive is off, fallback when on)
-                BackgroundSyncManager.shared.scheduleBackgroundRefresh()
             case .active:
-                // Foreground timer in SyncDashboardView takes over
-                BackgroundSyncManager.shared.stopBackgroundSyncLoop()
-                BackgroundSyncManager.shared.cancelPendingRefreshes()
+                Task {
+                    // Foreground timer in SyncDashboardView takes over
+                    await BackgroundSyncManager.shared.stopBackgroundSyncLoop()
+                    await BackgroundSyncManager.shared.cancelPendingRefreshes()
+                }
             default:
                 break
             }

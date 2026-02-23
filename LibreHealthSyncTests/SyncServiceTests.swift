@@ -1,13 +1,24 @@
 import XCTest
 @testable import LibreHealthSync
 
+// UserDefaults is thread-safe; add Sendable conformance for test use.
+extension UserDefaults: @retroactive @unchecked Sendable {}
+
 // MARK: - Mocks
 
-final class MockGlucoseDataProvider: GlucoseDataProvider {
+actor MockGlucoseDataProvider: GlucoseDataProvider {
     var connectionsToReturn: [Connection] = []
     var graphDataToReturn: GraphData = GraphData(connection: nil, activeSensors: nil, graphData: nil)
     var fetchConnectionsCallCount = 0
     var fetchGraphDataCallCount = 0
+
+    func setConnections(_ connections: [Connection]) {
+        connectionsToReturn = connections
+    }
+
+    func setGraphData(_ graphData: GraphData) {
+        graphDataToReturn = graphData
+    }
 
     func fetchConnections() async throws -> [Connection] {
         fetchConnectionsCallCount += 1
@@ -20,9 +31,13 @@ final class MockGlucoseDataProvider: GlucoseDataProvider {
     }
 }
 
-final class MockGlucoseWriter: GlucoseWriter {
+actor MockGlucoseWriter: GlucoseWriter {
     var writtenReadings: [HealthKitService.GlucoseReading] = []
     var writeCallCount = 0
+
+    func getWrittenReadings() -> [HealthKitService.GlucoseReading] {
+        writtenReadings
+    }
 
     func writeGlucoseReadings(_ readings: [HealthKitService.GlucoseReading]) async throws -> Int {
         writeCallCount += 1
@@ -95,14 +110,15 @@ final class SyncServiceTests: XCTestCase {
             makeGlucoseItem(mgPerDl: 120, timestamp: "1/1/2025 12:10:00 AM"),
         ]
 
-        mockAPI.connectionsToReturn = [makeConnection()]
-        mockAPI.graphDataToReturn = GraphData(connection: nil, activeSensors: nil, graphData: items)
+        await mockAPI.setConnections([makeConnection()])
+        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items))
 
         let service = makeSyncService()
         let result = try await service.sync()
 
         XCTAssertEqual(result.readingsWritten, 3)
-        XCTAssertEqual(mockWriter.writtenReadings.count, 3)
+        let writtenReadings = await mockWriter.getWrittenReadings()
+        XCTAssertEqual(writtenReadings.count, 3)
     }
 
     /// Subsequent sync should only write readings newer than lastSyncTimestamp.
@@ -116,16 +132,17 @@ final class SyncServiceTests: XCTestCase {
             makeGlucoseItem(mgPerDl: 120, timestamp: "1/1/2025 12:10:00 AM"),
         ]
 
-        mockAPI.connectionsToReturn = [makeConnection()]
-        mockAPI.graphDataToReturn = GraphData(connection: nil, activeSensors: nil, graphData: items)
+        await mockAPI.setConnections([makeConnection()])
+        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items))
 
         let service = makeSyncService()
         let result = try await service.sync()
 
         // Only the 12:10 reading is newer than lastSyncTimestamp of 12:05
         XCTAssertEqual(result.readingsWritten, 1)
-        XCTAssertEqual(mockWriter.writtenReadings.count, 1)
-        XCTAssertEqual(mockWriter.writtenReadings.first?.mgPerDl, 120)
+        let writtenReadings = await mockWriter.getWrittenReadings()
+        XCTAssertEqual(writtenReadings.count, 1)
+        XCTAssertEqual(writtenReadings.first?.mgPerDl, 120)
     }
 
     /// The current glucose from graphData.connection.latestGlucose should be included.
@@ -136,8 +153,8 @@ final class SyncServiceTests: XCTestCase {
         let currentItem = makeGlucoseItem(mgPerDl: 130, timestamp: "1/1/2025 12:15:00 AM")
         let connection = makeConnection(glucose: currentItem)
 
-        mockAPI.connectionsToReturn = [makeConnection()]
-        mockAPI.graphDataToReturn = GraphData(connection: connection, activeSensors: nil, graphData: historyItems)
+        await mockAPI.setConnections([makeConnection()])
+        await mockAPI.setGraphData(GraphData(connection: connection, activeSensors: nil, graphData: historyItems))
 
         let service = makeSyncService()
         let result = try await service.sync()
@@ -157,8 +174,8 @@ final class SyncServiceTests: XCTestCase {
             makeGlucoseItem(mgPerDl: 110, timestamp: "1/1/2025 12:05:00 AM"),
         ]
 
-        mockAPI.connectionsToReturn = [makeConnection()]
-        mockAPI.graphDataToReturn = GraphData(connection: nil, activeSensors: nil, graphData: items)
+        await mockAPI.setConnections([makeConnection()])
+        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items))
 
         let service = makeSyncService()
         let result = try await service.sync()
@@ -170,14 +187,15 @@ final class SyncServiceTests: XCTestCase {
 
     /// When there are no readings, nothing should be written.
     func testEmptyGraphDataWritesNothing() async throws {
-        mockAPI.connectionsToReturn = [makeConnection()]
-        mockAPI.graphDataToReturn = GraphData(connection: nil, activeSensors: nil, graphData: [])
+        await mockAPI.setConnections([makeConnection()])
+        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: []))
 
         let service = makeSyncService()
         let result = try await service.sync()
 
         XCTAssertEqual(result.readingsWritten, 0)
-        XCTAssertEqual(mockWriter.writtenReadings.count, 0)
+        let writtenReadings = await mockWriter.getWrittenReadings()
+        XCTAssertEqual(writtenReadings.count, 0)
     }
 
     /// After sync, the lastSyncTimestamp should be updated to the newest reading's timestamp.
@@ -187,8 +205,8 @@ final class SyncServiceTests: XCTestCase {
             makeGlucoseItem(mgPerDl: 120, timestamp: "1/1/2025 12:10:00 AM"),
         ]
 
-        mockAPI.connectionsToReturn = [makeConnection()]
-        mockAPI.graphDataToReturn = GraphData(connection: nil, activeSensors: nil, graphData: items)
+        await mockAPI.setConnections([makeConnection()])
+        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items))
 
         let service = makeSyncService()
         _ = try await service.sync()
