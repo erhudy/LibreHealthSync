@@ -90,6 +90,7 @@ LibreHealthSyncLiveActivity/
 
 ## Build & Run
 
-- Xcode 15+, iOS 17+ target
+- Xcode 26+, iOS 26.2+ target
+- Always target iPhone 17 Pro as the device in the simulator
 - Enable HealthKit capability in Xcode project settings
 - Add `NSHealthShareUsageDescription` and `NSHealthUpdateUsageDescription` to Info.plist
