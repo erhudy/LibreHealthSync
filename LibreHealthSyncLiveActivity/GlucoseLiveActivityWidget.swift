@@ -11,7 +11,7 @@ struct GlucoseLiveActivityWidget: Widget {
             // Lock Screen / StandBy presentation
             let _ = Self.logger.trace("GlucoseLiveActivityWidget lock screen closure called — glucoseMgPerDl: \(context.state.glucoseMgPerDl, privacy: .public), trendArrow: \(context.state.trendArrowRawValue, privacy: .public), readingTimestamp: \(context.state.readingTimestamp, privacy: .public), displayUnit: \(context.state.displayUnitRawValue, privacy: .public)")
             GlucoseLockScreenView(context: context)
-                .activityBackgroundTint(.black.opacity(0.7))
+                .activityBackgroundTint(Color(.systemBackground).opacity(0.3))
 
         } dynamicIsland: { context in
             DynamicIsland {
