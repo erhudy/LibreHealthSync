@@ -185,6 +185,7 @@ nonisolated struct GraphData: Decodable {
     let connection: Connection?
     let activeSensors: [SensorInfo]?
     let graphData: [GlucoseItem]?
+    let logbookData: [GlucoseItem]?
 }
 
 // MARK: - Timestamp Parsing

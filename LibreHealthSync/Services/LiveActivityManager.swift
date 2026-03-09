@@ -10,6 +10,21 @@ final class LiveActivityManager {
 
     public let logger = Logger(subsystem: "com.erhudy.librehealthsync", category: "LiveActivityManager")
 
+    func updateOrCreateActivity(connectionName: String, displayUnit: GlucoseDisplayUnit, glucose: GlucoseItem) async {
+        logger.trace("Calling LiveActivityManager.updateOrCreateActivity")
+        
+        // Reclaim if currentActivity is nil or ended
+        if currentActivity == nil || currentActivity?.activityState != .active {
+            reclaimExistingActivity()
+        }
+        
+        if let _ = currentActivity {
+            await updateActivity(glucose: glucose, displayUnit: displayUnit)
+        } else {
+            startActivity(connectionName: connectionName, displayUnit: displayUnit, glucose: glucose)
+        }
+    }
+
     func startActivity(connectionName: String, displayUnit: GlucoseDisplayUnit, glucose: GlucoseItem) {
         logger.trace("Calling LiveActivityManager.startActivity")
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }

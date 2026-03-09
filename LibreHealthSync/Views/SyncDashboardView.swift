@@ -3,9 +3,9 @@ import SwiftUI
 
 struct SyncDashboardView: View {
     @Environment(AppState.self) private var appState
+    @Environment(\.scenePhase) private var scenePhase
 
     let syncService: SyncService
-    let liveActivityManager: LiveActivityManager
 
     @State private var secondsRemaining: Int = 0
     @State private var timerTask: Task<Void, Never>?
@@ -62,6 +62,13 @@ struct SyncDashboardView: View {
             .onDisappear { timerTask?.cancel() }
             .onChange(of: appState.autoRefreshIntervalSeconds) {
                 startAutoRefreshTimer()
+            }
+            .onChange(of: scenePhase) { _, newPhase in
+                if newPhase == .active {
+                    startAutoRefreshTimer()
+                } else {
+                    timerTask?.cancel()
+                }
             }
         }
     }
@@ -254,27 +261,7 @@ struct SyncDashboardView: View {
 
         do {
             let result = try await syncService.sync()
-            appState.connectionName = result.connectionName
-            appState.currentGlucose = result.currentGlucose
-            appState.recentReadings = result.allReadings
-            appState.lastSyncDate = Date()
-            appState.lastSyncReadingsCount = result.readingsWritten
-
-            // Update or start Live Activity
-            if let glucose = result.currentGlucose {
-                if Activity<GlucoseLiveActivityAttributes>.activities.isEmpty {
-                    liveActivityManager.startActivity(
-                        connectionName: result.connectionName!,
-                        displayUnit: appState.displayUnit,
-                        glucose: glucose
-                    )
-                } else {
-                    await liveActivityManager.updateActivity(
-                        glucose: glucose,
-                        displayUnit: appState.displayUnit
-                    )
-                }
-            }
+            await appState.updateFromSyncResult(result)
         } catch {
             appState.setError(error.localizedDescription)
         }
