@@ -38,6 +38,9 @@ actor SyncService {
         if let graphItems = graphData.graphData {
             allReadings.append(contentsOf: graphItems)
         }
+        if let logbookItems = graphData.logbookData {
+            allReadings.append(contentsOf: logbookItems)
+        }
 
         let currentGlucose = graphData.connection?.latestGlucose
 
@@ -52,15 +55,24 @@ actor SyncService {
 
         // Build the full set of readings for HealthKit (graph + current)
         var allReadingsForWrite = allReadings
-        if let current = currentGlucose, current.factoryTimestamp != nil {
-            allReadingsForWrite.append(current)
-            allReadingsForWrite.sort { lhs, rhs in
-                guard let l = lhs.factoryTimestamp, let r = rhs.factoryTimestamp,
-                      let lDate = LibreLinkUpTimestamp.parse(l),
-                      let rDate = LibreLinkUpTimestamp.parse(r)
-                else { return false }
-                return lDate < rDate
+        
+        // Add all available measurements from the connection object to fill potential gaps
+        let possibleLatest = [graphData.connection?.glucoseMeasurement, graphData.connection?.glucoseItem, connection.glucoseMeasurement, connection.glucoseItem]
+        for item in possibleLatest {
+            if let reading = item, let ts = reading.factoryTimestamp {
+                // Only add if not already present (avoid duplicates by timestamp)
+                if !allReadingsForWrite.contains(where: { $0.factoryTimestamp == ts }) {
+                    allReadingsForWrite.append(reading)
+                }
             }
+        }
+        
+        allReadingsForWrite.sort { lhs, rhs in
+            guard let l = lhs.factoryTimestamp, let r = rhs.factoryTimestamp,
+                  let lDate = LibreLinkUpTimestamp.parse(l),
+                  let rDate = LibreLinkUpTimestamp.parse(r)
+            else { return false }
+            return lDate < rDate
         }
 
         // Deduplicate: only keep readings newer than last synced timestamp
@@ -93,7 +105,7 @@ actor SyncService {
         return SyncResult(
             readingsWritten: writtenCount,
             currentGlucose: currentGlucose,
-            allReadings: allReadings,
+            allReadings: allReadingsForWrite,
             connectionName: connection.displayName
         )
     }

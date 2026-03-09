@@ -14,7 +14,7 @@ struct ContentView: View {
             } else if !appState.isLoggedIn {
                 LoginView(apiService: apiService)
             } else {
-                SyncDashboardView(syncService: syncService, liveActivityManager: liveActivityManager)
+                SyncDashboardView(syncService: syncService)
             }
         }
         .animation(.default, value: appState.hasAcceptedTerms)

@@ -25,6 +25,9 @@ struct LibreHealthSyncApp: App {
                 .onAppear {
                     liveActivityManager.reclaimExistingActivity()
                 }
+                .task {
+                    await BackgroundSyncManager.shared.setup(appState: appState, syncService: syncService)
+                }
         }
         .onChange(of: scenePhase) { _, newPhase in
             switch newPhase {

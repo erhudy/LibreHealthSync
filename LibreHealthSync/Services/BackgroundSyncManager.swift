@@ -11,10 +11,18 @@ actor BackgroundSyncManager {
 
     private var audioPlayer: AVAudioPlayer?
     private var backgroundSyncTask: Task<Void, Never>?
+    
+    private var appState: AppState?
+    private var syncService: SyncService?
 
     nonisolated public let logger = Logger(subsystem: "com.erhudy.librehealthsync", category: "BackgroundSyncManager")
 
     private init() {}
+    
+    func setup(appState: AppState, syncService: SyncService) {
+        self.appState = appState
+        self.syncService = syncService
+    }
 
     // MARK: - BGTaskScheduler (infrequent fallback)
 
@@ -53,8 +61,7 @@ actor BackgroundSyncManager {
 
         let syncTask = Task {
             do {
-                let result = try await performBackgroundSync()
-                await updateLiveActivity(with: result)
+                try await performBackgroundSync()
                 task.setTaskCompleted(success: true)
             } catch {
                 logger.error("Background refresh sync failed: \(error)")
@@ -80,8 +87,7 @@ actor BackgroundSyncManager {
         backgroundSyncTask = Task {
             while !Task.isCancelled {
                 do {
-                    let result = try await performBackgroundSync()
-                    await updateLiveActivity(with: result)
+                    try await performBackgroundSync()
                 } catch {
                     logger.error("Background sync loop iteration failed: \(error)")
                 }
@@ -187,29 +193,15 @@ actor BackgroundSyncManager {
 
     // MARK: - Shared sync logic
 
-    private func performBackgroundSync() async throws -> SyncService.SyncResult {
+    private func performBackgroundSync() async throws {
         logger.trace("Calling BackgroundSyncManager.performBackgroundSync")
-        let apiService = await LibreLinkUpService()
-        let healthKitService = await HealthKitService()
-        let syncService = SyncService(api: apiService, healthKit: healthKitService, reloginHandler: { try await apiService.relogin() })
-        return try await syncService.sync()
-    }
-
-    private func updateLiveActivity(with result: SyncService.SyncResult) async {
-        logger.trace("Calling BackgroundSyncManager.updateLiveActivity")
-        guard let glucose = result.currentGlucose else { return }
-
-        let displayUnitRaw = UserDefaults.standard.string(forKey: "displayUnit") ?? GlucoseDisplayUnit.mgdl.rawValue
-        let displayUnit = GlucoseDisplayUnit(rawValue: displayUnitRaw) ?? .mgdl
-
-        if await LiveActivityManager.shared.hasActiveActivity {
-            logger.trace("Live Activity was updated because active one exists")
-            await LiveActivityManager.shared.updateActivity(glucose: glucose, displayUnit: displayUnit)
-        } else if let connectionName = result.connectionName {
-            logger.trace("Live Activity was started")
-            await LiveActivityManager.shared.startActivity(connectionName: connectionName, displayUnit: displayUnit, glucose: glucose)
-        } else {
-            logger.trace("Ran off end of LiveActivity block")
+        guard let syncService = syncService, let appState = appState else {
+            logger.error("BackgroundSyncManager not configured with syncService or appState")
+            return
         }
+        
+        let result = try await syncService.sync()
+        
+        await appState.updateFromSyncResult(result)
     }
 }

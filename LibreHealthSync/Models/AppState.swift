@@ -89,6 +89,22 @@ final class AppState {
         lastSyncReadingsCount = 0
         UserDefaults.standard.removeObject(forKey: "lastSyncTimestamp")
     }
+
+    func updateFromSyncResult(_ result: SyncService.SyncResult) async {
+        self.connectionName = result.connectionName
+        self.currentGlucose = result.currentGlucose
+        self.recentReadings = result.allReadings
+        self.lastSyncDate = Date()
+        self.lastSyncReadingsCount = result.readingsWritten
+
+        if let glucose = result.currentGlucose, let connectionName = result.connectionName {
+            await LiveActivityManager.shared.updateOrCreateActivity(
+                connectionName: connectionName,
+                displayUnit: self.displayUnit,
+                glucose: glucose
+            )
+        }
+    }
 }
 
 enum GlucoseDisplayUnit: String, CaseIterable {
