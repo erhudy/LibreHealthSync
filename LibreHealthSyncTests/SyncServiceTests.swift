@@ -8,7 +8,7 @@ extension UserDefaults: @retroactive @unchecked Sendable {}
 
 actor MockGlucoseDataProvider: GlucoseDataProvider {
     var connectionsToReturn: [Connection] = []
-    var graphDataToReturn: GraphData = GraphData(connection: nil, activeSensors: nil, graphData: nil)
+    var graphDataToReturn: GraphData = GraphData(connection: nil, activeSensors: nil, graphData: nil, logbookData: nil)
     var fetchConnectionsCallCount = 0
     var fetchGraphDataCallCount = 0
 
@@ -111,7 +111,7 @@ final class SyncServiceTests: XCTestCase {
         ]
 
         await mockAPI.setConnections([makeConnection()])
-        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items))
+        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items, logbookData: nil))
 
         let service = makeSyncService()
         let result = try await service.sync()
@@ -133,7 +133,7 @@ final class SyncServiceTests: XCTestCase {
         ]
 
         await mockAPI.setConnections([makeConnection()])
-        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items))
+        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items, logbookData: nil))
 
         let service = makeSyncService()
         let result = try await service.sync()
@@ -154,7 +154,7 @@ final class SyncServiceTests: XCTestCase {
         let connection = makeConnection(glucose: currentItem)
 
         await mockAPI.setConnections([makeConnection()])
-        await mockAPI.setGraphData(GraphData(connection: connection, activeSensors: nil, graphData: historyItems))
+        await mockAPI.setGraphData(GraphData(connection: connection, activeSensors: nil, graphData: historyItems, logbookData: nil))
 
         let service = makeSyncService()
         let result = try await service.sync()
@@ -175,7 +175,7 @@ final class SyncServiceTests: XCTestCase {
         ]
 
         await mockAPI.setConnections([makeConnection()])
-        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items))
+        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items, logbookData: nil))
 
         let service = makeSyncService()
         let result = try await service.sync()
@@ -188,7 +188,7 @@ final class SyncServiceTests: XCTestCase {
     /// When there are no readings, nothing should be written.
     func testEmptyGraphDataWritesNothing() async throws {
         await mockAPI.setConnections([makeConnection()])
-        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: []))
+        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: [], logbookData: nil))
 
         let service = makeSyncService()
         let result = try await service.sync()
@@ -206,7 +206,7 @@ final class SyncServiceTests: XCTestCase {
         ]
 
         await mockAPI.setConnections([makeConnection()])
-        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items))
+        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items, logbookData: nil))
 
         let service = makeSyncService()
         _ = try await service.sync()

@@ -28,6 +28,22 @@ enum GlucoseDisplayHelpers {
         }
     }
 
+    /// Returns a color for a staleness border, transitioning smoothly from orange to red.
+    /// Returns nil if the age is below the orange threshold (no border needed).
+    static func stalenessColor(age: TimeInterval, orangeMinutes: Int, redMinutes: Int) -> Color? {
+        let orangeSeconds = Double(orangeMinutes) * 60.0
+        let redSeconds = Double(redMinutes) * 60.0
+        guard age >= orangeSeconds else { return nil }
+        let range = max(1.0, redSeconds - orangeSeconds)
+        let progress = min(1.0, (age - orangeSeconds) / range)
+        // Interpolate between system orange (1.0, 0.584, 0.0) and system red (1.0, 0.231, 0.188)
+        return Color(
+            red: 1.0,
+            green: 0.584 + (0.231 - 0.584) * progress,
+            blue: 0.188 * progress
+        )
+    }
+
     static func trendDescription(rawValue: Int) -> String {
         switch rawValue {
         case 1: return "Falling Quickly"

@@ -10,7 +10,7 @@ final class LiveActivityManager {
 
     public let logger = Logger(subsystem: "com.erhudy.librehealthsync", category: "LiveActivityManager")
 
-    func updateOrCreateActivity(connectionName: String, displayUnit: GlucoseDisplayUnit, glucose: GlucoseItem) async {
+    func updateOrCreateActivity(connectionName: String, displayUnit: GlucoseDisplayUnit, glucose: GlucoseItem, stalenessOrangeMinutes: Int = 15, stalenessRedMinutes: Int = 60) async {
         logger.trace("Calling LiveActivityManager.updateOrCreateActivity")
         
         // Reclaim if currentActivity is nil or ended
@@ -19,13 +19,13 @@ final class LiveActivityManager {
         }
         
         if let _ = currentActivity {
-            await updateActivity(glucose: glucose, displayUnit: displayUnit)
+            await updateActivity(glucose: glucose, displayUnit: displayUnit, stalenessOrangeMinutes: stalenessOrangeMinutes, stalenessRedMinutes: stalenessRedMinutes)
         } else {
-            startActivity(connectionName: connectionName, displayUnit: displayUnit, glucose: glucose)
+            startActivity(connectionName: connectionName, displayUnit: displayUnit, glucose: glucose, stalenessOrangeMinutes: stalenessOrangeMinutes, stalenessRedMinutes: stalenessRedMinutes)
         }
     }
 
-    func startActivity(connectionName: String, displayUnit: GlucoseDisplayUnit, glucose: GlucoseItem) {
+    func startActivity(connectionName: String, displayUnit: GlucoseDisplayUnit, glucose: GlucoseItem, stalenessOrangeMinutes: Int = 15, stalenessRedMinutes: Int = 60) {
         logger.trace("Calling LiveActivityManager.startActivity")
         guard ActivityAuthorizationInfo().areActivitiesEnabled else { return }
         guard let mgPerDl = glucose.mgPerDl,
@@ -37,7 +37,9 @@ final class LiveActivityManager {
             glucoseMgPerDl: mgPerDl,
             trendArrowRawValue: glucose.TrendArrow ?? 0,
             readingTimestamp: readingDate,
-            displayUnitRawValue: displayUnit.rawValue
+            displayUnitRawValue: displayUnit.rawValue,
+            stalenessOrangeMinutes: stalenessOrangeMinutes,
+            stalenessRedMinutes: stalenessRedMinutes
         )
 
         do {
@@ -51,7 +53,7 @@ final class LiveActivityManager {
         }
     }
 
-    func updateActivity(glucose: GlucoseItem, displayUnit: GlucoseDisplayUnit) async {
+    func updateActivity(glucose: GlucoseItem, displayUnit: GlucoseDisplayUnit, stalenessOrangeMinutes: Int = 15, stalenessRedMinutes: Int = 60) async {
         logger.trace("Calling LiveActivityManager.updateActivity")
         if currentActivity == nil { return }
         guard let mgPerDl = glucose.mgPerDl,
@@ -62,7 +64,9 @@ final class LiveActivityManager {
             glucoseMgPerDl: mgPerDl,
             trendArrowRawValue: glucose.TrendArrow ?? 0,
             readingTimestamp: readingDate,
-            displayUnitRawValue: displayUnit.rawValue
+            displayUnitRawValue: displayUnit.rawValue,
+            stalenessOrangeMinutes: stalenessOrangeMinutes,
+            stalenessRedMinutes: stalenessRedMinutes
         )
 
         logger.trace("In updateActivity")

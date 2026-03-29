@@ -10,5 +10,7 @@ struct GlucoseLiveActivityAttributes: ActivityAttributes {
         let trendArrowRawValue: Int
         let readingTimestamp: Date
         let displayUnitRawValue: String
+        let stalenessOrangeMinutes: Int
+        let stalenessRedMinutes: Int
     }
 }

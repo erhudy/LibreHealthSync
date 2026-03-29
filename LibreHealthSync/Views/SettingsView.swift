@@ -33,6 +33,25 @@ struct SettingsView: View {
                 Text("Constant background sync plays a silent audio file to keep the app running continuously. This updates more frequently but uses more battery. When off, iOS controls how often the app refreshes in the background.")
             }
 
+            Section {
+                Stepper(
+                    "Orange border after \(state.stalenessOrangeMinutes) min",
+                    value: $state.stalenessOrangeMinutes,
+                    in: 1...30,
+                    step: 1
+                )
+                Stepper(
+                    "Red border after \(state.stalenessRedMinutes) min",
+                    value: $state.stalenessRedMinutes,
+                    in: 5...180,
+                    step: 5
+                )
+            } header: {
+                Text("Live Activity Staleness")
+            } footer: {
+                Text("A colored border appears when the Live Activity is showing data older than the orange threshold, transitioning to red as data ages further.")
+            }
+
             Section("Account") {
                 if let email = KeychainService().getEmail() {
                     HStack {

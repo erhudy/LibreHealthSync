@@ -38,6 +38,16 @@ final class AppState {
             UserDefaults.standard.set(aggressiveBackgroundSync, forKey: "aggressiveBackgroundSync")
         }
     }
+    var stalenessOrangeMinutes: Int = 15 {
+        didSet {
+            UserDefaults.standard.set(stalenessOrangeMinutes, forKey: "stalenessOrangeMinutes")
+        }
+    }
+    var stalenessRedMinutes: Int = 60 {
+        didSet {
+            UserDefaults.standard.set(stalenessRedMinutes, forKey: "stalenessRedMinutes")
+        }
+    }
 
     init() {
         // Restore persisted preferences
@@ -51,6 +61,14 @@ final class AppState {
         }
         if UserDefaults.standard.object(forKey: "aggressiveBackgroundSync") != nil {
             aggressiveBackgroundSync = UserDefaults.standard.bool(forKey: "aggressiveBackgroundSync")
+        }
+        let orangeMinutes = UserDefaults.standard.integer(forKey: "stalenessOrangeMinutes")
+        if orangeMinutes > 0 {
+            stalenessOrangeMinutes = orangeMinutes
+        }
+        let redMinutes = UserDefaults.standard.integer(forKey: "stalenessRedMinutes")
+        if redMinutes > 0 {
+            stalenessRedMinutes = redMinutes
         }
 
         // Restore terms acceptance
@@ -101,7 +119,9 @@ final class AppState {
             await LiveActivityManager.shared.updateOrCreateActivity(
                 connectionName: connectionName,
                 displayUnit: self.displayUnit,
-                glucose: glucose
+                glucose: glucose,
+                stalenessOrangeMinutes: self.stalenessOrangeMinutes,
+                stalenessRedMinutes: self.stalenessRedMinutes
             )
         }
     }
