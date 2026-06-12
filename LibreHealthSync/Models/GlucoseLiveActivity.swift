@@ -1,7 +1,7 @@
 import ActivityKit
 import Foundation
 
-struct GlucoseLiveActivityAttributes: ActivityAttributes {
+nonisolated struct GlucoseLiveActivityAttributes: ActivityAttributes {
     /// Name of the LibreLinkUp connection (patient name) — static for the activity lifetime
     let connectionName: String
 
@@ -10,5 +10,6 @@ struct GlucoseLiveActivityAttributes: ActivityAttributes {
         let trendArrowRawValue: Int
         let readingTimestamp: Date
         let displayUnitRawValue: String
+        let stalenessRedMinutes: Int
     }
 }

@@ -1,7 +1,7 @@
 import Foundation
 import HealthKit
 
-protocol GlucoseWriter: Sendable {
+nonisolated protocol GlucoseWriter: Sendable {
     func writeGlucoseReadings(_ readings: [HealthKitService.GlucoseReading]) async throws -> Int
 }
 

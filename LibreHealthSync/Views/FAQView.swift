@@ -18,7 +18,7 @@ struct FAQView: View {
                 )
                 FAQItem(
                     question: "Why doesn't the Live Activity update regularly?",
-                    answer: "iOS updates the value on the Live Activity when it feels like it, basically. In my experience, it usually updates every 10-15 minutes."
+                    answer: "iOS updates the value on the Live Activity when it feels like it, basically. In my experiences the update schedule is quite erratic and it can sometimes go hours without updating."
                 )
                 FAQItem(
                     question: "Why is this not on the App Store?",

@@ -33,7 +33,7 @@ nonisolated enum LibreLinkUpError: LocalizedError {
     }
 }
 
-protocol GlucoseDataProvider: Sendable {
+nonisolated protocol GlucoseDataProvider: Sendable {
     func fetchConnections() async throws -> [Connection]
     func fetchGraphData(connectionId: String) async throws -> GraphData
 }
