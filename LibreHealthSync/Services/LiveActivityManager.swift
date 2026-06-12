@@ -29,7 +29,10 @@ final class LiveActivityManager {
             displayUnitRawValue: displayUnit.rawValue,
             stalenessRedMinutes: stalenessRedMinutes
         )
-        let content = ActivityContent(state: state, staleDate: Date().addingTimeInterval(5 * 60))
+        // staleDate drives the red-border re-render: the system redraws the view with
+        // context.isStale == true once this date passes.
+        let staleDate = readingDate.addingTimeInterval(Double(stalenessRedMinutes) * 60)
+        let content = ActivityContent(state: state, staleDate: staleDate)
 
         // Reconcile with the system's activity list every time: our cached handle can
         // point at an activity the user dismissed or that survived from a previous run.

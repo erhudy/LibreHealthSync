@@ -28,12 +28,6 @@ enum GlucoseDisplayHelpers {
         }
     }
 
-    /// Returns red when the reading is older than the threshold, nil otherwise.
-    static func stalenessColor(age: TimeInterval, redMinutes: Int) -> Color? {
-        guard age >= Double(redMinutes) * 60.0 else { return nil }
-        return .red
-    }
-
     static func trendDescription(rawValue: Int) -> String {
         switch rawValue {
         case 1: return "Falling Quickly"
