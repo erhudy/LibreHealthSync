@@ -36,21 +36,15 @@ struct SettingsView: View {
 
             Section {
                 Stepper(
-                    "Orange border after \(state.stalenessOrangeMinutes) min",
-                    value: $state.stalenessOrangeMinutes,
-                    in: 1...30,
-                    step: 1
-                )
-                Stepper(
                     "Red border after \(state.stalenessRedMinutes) min",
                     value: $state.stalenessRedMinutes,
-                    in: 5...180,
-                    step: 5
+                    in: 1...180,
+                    step: 1
                 )
             } header: {
                 Text("Live Activity Staleness")
             } footer: {
-                Text("A colored border appears when the Live Activity is showing data older than the orange threshold, transitioning to red as data ages further.")
+                Text("A red border appears on the Live Activity when the displayed reading is older than this threshold.")
             }
 
             Section("Account") {

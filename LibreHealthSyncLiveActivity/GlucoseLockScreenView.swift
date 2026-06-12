@@ -13,14 +13,13 @@ struct GlucoseLockScreenView: View {
     }
 
     var body: some View {
-        let _ = Self.logger.trace("GlucoseLockScreenView body called — glucoseMgPerDl: \(state.glucoseMgPerDl, privacy: .public), trendArrow: \(state.trendArrowRawValue, privacy: .public), readingTimestamp: \(state.readingTimestamp, privacy: .public), displayUnit: \(state.displayUnitRawValue, privacy: .public)")
-        TimelineView(.periodic(from: .now, by: 30)) { timeline in
+        TimelineView(.periodic(from: .now, by: 5)) { timeline in
             let age = timeline.date.timeIntervalSince(state.readingTimestamp)
             let borderColor = GlucoseDisplayHelpers.stalenessColor(
                 age: age,
-                orangeMinutes: state.stalenessOrangeMinutes,
                 redMinutes: state.stalenessRedMinutes
             )
+            let _ = Self.logger.warning("GlucoseLockScreenView body called — glucoseMgPerDl: \(state.glucoseMgPerDl, privacy: .public), trendArrow: \(state.trendArrowRawValue, privacy: .public), readingTimestamp: \(state.readingTimestamp, privacy: .public), displayUnit: \(state.displayUnitRawValue, privacy: .public), redMinutes: \(state.stalenessRedMinutes, privacy: .public), age: \(age, privacy: .public)")
             VStack(spacing: 8) {
                 HStack(alignment: .center, spacing: 6) {
                     Text(GlucoseDisplayHelpers.formatGlucose(
@@ -49,7 +48,7 @@ struct GlucoseLockScreenView: View {
             .overlay {
                 if let color = borderColor {
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .stroke(color, lineWidth: 4)
+                        .stroke(color, lineWidth: 6)
                 }
             }
         }

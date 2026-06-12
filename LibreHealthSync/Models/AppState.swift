@@ -26,6 +26,7 @@ final class AppState {
     var displayUnit: GlucoseDisplayUnit = .mgdl {
         didSet {
             UserDefaults.standard.set(displayUnit.rawValue, forKey: "displayUnit")
+            Task { await refreshLiveActivity() }
         }
     }
     var autoRefreshIntervalSeconds: Int = 60 {
@@ -38,14 +39,10 @@ final class AppState {
             UserDefaults.standard.set(aggressiveBackgroundSync, forKey: "aggressiveBackgroundSync")
         }
     }
-    var stalenessOrangeMinutes: Int = 15 {
-        didSet {
-            UserDefaults.standard.set(stalenessOrangeMinutes, forKey: "stalenessOrangeMinutes")
-        }
-    }
-    var stalenessRedMinutes: Int = 60 {
+    var stalenessRedMinutes: Int = 5 {
         didSet {
             UserDefaults.standard.set(stalenessRedMinutes, forKey: "stalenessRedMinutes")
+            Task { await refreshLiveActivity() }
         }
     }
 
@@ -61,10 +58,6 @@ final class AppState {
         }
         if UserDefaults.standard.object(forKey: "aggressiveBackgroundSync") != nil {
             aggressiveBackgroundSync = UserDefaults.standard.bool(forKey: "aggressiveBackgroundSync")
-        }
-        let orangeMinutes = UserDefaults.standard.integer(forKey: "stalenessOrangeMinutes")
-        if orangeMinutes > 0 {
-            stalenessOrangeMinutes = orangeMinutes
         }
         let redMinutes = UserDefaults.standard.integer(forKey: "stalenessRedMinutes")
         if redMinutes > 0 {
@@ -115,15 +108,18 @@ final class AppState {
         self.lastSyncDate = Date()
         self.lastSyncReadingsCount = result.readingsWritten
 
-        if let glucose = result.currentGlucose, let connectionName = result.connectionName {
-            await LiveActivityManager.shared.updateOrCreateActivity(
-                connectionName: connectionName,
-                displayUnit: self.displayUnit,
-                glucose: glucose,
-                stalenessOrangeMinutes: self.stalenessOrangeMinutes,
-                stalenessRedMinutes: self.stalenessRedMinutes
-            )
-        }
+        await refreshLiveActivity()
+    }
+
+    /// Push the current glucose reading and display settings to the Live Activity.
+    func refreshLiveActivity() async {
+        guard let glucose = currentGlucose, let connectionName else { return }
+        await LiveActivityManager.shared.updateOrCreateActivity(
+            connectionName: connectionName,
+            displayUnit: displayUnit,
+            glucose: glucose,
+            stalenessRedMinutes: stalenessRedMinutes
+        )
     }
 }
 
