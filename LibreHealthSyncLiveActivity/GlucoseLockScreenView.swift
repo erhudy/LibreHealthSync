@@ -18,7 +18,7 @@ struct GlucoseLockScreenView: View {
         // provides is the staleDate: once it passes, the view is redrawn with
         // context.isStale == true. The staleDate is set to the reading timestamp plus
         // the user's red-border threshold, so isStale *is* the border condition.
-        let _ = Self.logger.warning("GlucoseLockScreenView body called — glucoseMgPerDl: \(state.glucoseMgPerDl, privacy: .public), trendArrow: \(state.trendArrowRawValue, privacy: .public), readingTimestamp: \(state.readingTimestamp, privacy: .public), displayUnit: \(state.displayUnitRawValue, privacy: .public), redMinutes: \(state.stalenessRedMinutes, privacy: .public), isStale: \(context.isStale, privacy: .public)")
+        let _ = Self.logger.trace("GlucoseLockScreenView body called — glucoseMgPerDl: \(state.glucoseMgPerDl, privacy: .public), trendArrow: \(state.trendArrowRawValue, privacy: .public), readingTimestamp: \(state.readingTimestamp, privacy: .public), displayUnit: \(state.displayUnitRawValue, privacy: .public), isStale: \(context.isStale, privacy: .public)")
         VStack(spacing: 8) {
             HStack(alignment: .center, spacing: 6) {
                 Text(GlucoseDisplayHelpers.formatGlucose(
@@ -26,7 +26,7 @@ struct GlucoseLockScreenView: View {
                     unitRaw: state.displayUnitRawValue
                 ))
                 .font(.system(size: 48, weight: .bold, design: .rounded))
-                .foregroundStyle(GlucoseDisplayHelpers.glucoseColor(mgPerDl: state.glucoseMgPerDl))
+                .foregroundStyle(GlucoseDisplayHelpers.glucoseColor(mgPerDl: state.glucoseMgPerDl, isStale: context.isStale))
 
                 Text(state.displayUnitRawValue)
                     .font(.caption)

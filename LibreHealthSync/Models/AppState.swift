@@ -26,7 +26,7 @@ final class AppState {
     var displayUnit: GlucoseDisplayUnit = .mgdl {
         didSet {
             UserDefaults.standard.set(displayUnit.rawValue, forKey: "displayUnit")
-            Task { await refreshLiveActivity() }
+            scheduleLiveActivityRefresh()
         }
     }
     var autoRefreshIntervalSeconds: Int = 60 {
@@ -42,9 +42,11 @@ final class AppState {
     var stalenessRedMinutes: Int = 5 {
         didSet {
             UserDefaults.standard.set(stalenessRedMinutes, forKey: "stalenessRedMinutes")
-            Task { await refreshLiveActivity() }
+            scheduleLiveActivityRefresh()
         }
     }
+
+    @ObservationIgnored private var liveActivityRefreshTask: Task<Void, Never>?
 
     init() {
         // Restore persisted preferences
@@ -111,9 +113,30 @@ final class AppState {
         await refreshLiveActivity()
     }
 
+    /// Coalesce bursts of settings changes (e.g. a held Stepper) into a single
+    /// Live Activity update, since iOS budgets how often an activity may refresh.
+    private func scheduleLiveActivityRefresh() {
+        liveActivityRefreshTask?.cancel()
+        liveActivityRefreshTask = Task {
+            do {
+                try await Task.sleep(for: .milliseconds(500))
+            } catch { return }
+            await refreshLiveActivity()
+        }
+    }
+
     /// Push the current glucose reading and display settings to the Live Activity.
     func refreshLiveActivity() async {
-        guard let glucose = currentGlucose, let connectionName else { return }
+        guard let glucose = currentGlucose, let connectionName else {
+            // No reading in app state yet (e.g. relaunch before a successful sync):
+            // re-render any existing activity from its own last reading so settings
+            // changes still reach the lock screen.
+            await LiveActivityManager.shared.applyDisplaySettings(
+                displayUnit: displayUnit,
+                stalenessRedMinutes: stalenessRedMinutes
+            )
+            return
+        }
         await LiveActivityManager.shared.updateOrCreateActivity(
             connectionName: connectionName,
             displayUnit: displayUnit,

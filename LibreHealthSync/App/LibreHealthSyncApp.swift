@@ -22,9 +22,6 @@ struct LibreHealthSyncApp: App {
         WindowGroup {
             ContentView(apiService: apiService, syncService: syncService, liveActivityManager: liveActivityManager)
                 .environment(appState)
-                .onAppear {
-                    liveActivityManager.reclaimExistingActivity()
-                }
                 .task {
                     await BackgroundSyncManager.shared.setup(appState: appState, syncService: syncService)
                 }

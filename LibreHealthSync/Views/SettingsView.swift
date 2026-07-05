@@ -31,7 +31,7 @@ struct SettingsView: View {
             } header: {
                 Text("Auto Refresh")
             } footer: {
-                Text("Constant background sync plays a silent audio file to keep the app running continuously. This updates more frequently but uses more battery. When off, iOS controls how often the app refreshes in the background. Auto Refresh Interval setting is not honored when the ap is backgrounded because of how iOS handles backgrounded tasks.")
+                Text("Constant background sync plays a silent audio file to keep the app running continuously. This updates more frequently but uses more battery. When off, iOS controls how often the app refreshes in the background. Auto Refresh Interval setting is not honored when the app is backgrounded because of how iOS handles backgrounded tasks.")
             }
 
             Section {
