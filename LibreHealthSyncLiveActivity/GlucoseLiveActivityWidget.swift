@@ -23,7 +23,7 @@ struct GlucoseLiveActivityWidget: Widget {
                         unitRaw: context.state.displayUnitRawValue
                     ))
                     .font(.system(size: 32, weight: .bold, design: .rounded))
-                    .foregroundStyle(GlucoseDisplayHelpers.glucoseColor(mgPerDl: context.state.glucoseMgPerDl))
+                    .foregroundStyle(GlucoseDisplayHelpers.glucoseColor(mgPerDl: context.state.glucoseMgPerDl, isStale: context.isStale))
                 }
 
                 DynamicIslandExpandedRegion(.trailing) {
@@ -50,7 +50,7 @@ struct GlucoseLiveActivityWidget: Widget {
                 ))
                 .font(.system(.headline, design: .rounded))
                 .fontWeight(.bold)
-                .foregroundStyle(GlucoseDisplayHelpers.glucoseColor(mgPerDl: context.state.glucoseMgPerDl))
+                .foregroundStyle(GlucoseDisplayHelpers.glucoseColor(mgPerDl: context.state.glucoseMgPerDl, isStale: context.isStale))
             } compactTrailing: {
                 Text(GlucoseDisplayHelpers.trendSymbol(rawValue: context.state.trendArrowRawValue))
                     .font(.headline)
@@ -61,7 +61,7 @@ struct GlucoseLiveActivityWidget: Widget {
                 ))
                 .font(.system(.caption, design: .rounded))
                 .fontWeight(.bold)
-                .foregroundStyle(GlucoseDisplayHelpers.glucoseColor(mgPerDl: context.state.glucoseMgPerDl))
+                .foregroundStyle(GlucoseDisplayHelpers.glucoseColor(mgPerDl: context.state.glucoseMgPerDl, isStale: context.isStale))
             }
         }
     }

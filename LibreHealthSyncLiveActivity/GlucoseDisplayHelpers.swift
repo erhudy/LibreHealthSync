@@ -11,7 +11,11 @@ enum GlucoseDisplayHelpers {
         return String(format: "%.0f", mgPerDl)
     }
 
-    static func glucoseColor(mgPerDl: Double) -> Color {
+    /// A stale reading renders gray so every presentation (lock screen, Dynamic
+    /// Island) signals "outdated" the same way, without colliding with the
+    /// red-means-low color scale.
+    static func glucoseColor(mgPerDl: Double, isStale: Bool) -> Color {
+        if isStale { return .gray }
         if mgPerDl < 70 { return .red }
         if mgPerDl > 180 { return .orange }
         return .green
