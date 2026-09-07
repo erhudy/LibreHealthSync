@@ -64,6 +64,22 @@ nonisolated struct LoginData: Decodable {
     let authTicket: AuthTicket?
     let redirect: Bool?
     let region: String?
+    /// Set on failures, e.g. "notAuthenticated" for bad credentials.
+    let message: String?
+    /// Seconds remaining on a rate-limit lockout, when the server reports one.
+    let lockout: Int?
+}
+
+/// Body of a 429/430 rate-limit response:
+/// `{"status":429,"data":{"lockout":300},"message":"locked"}`
+nonisolated struct RateLimitResponse: Decodable {
+    let status: Int?
+    let data: RateLimitData?
+    let message: String?
+}
+
+nonisolated struct RateLimitData: Decodable {
+    let lockout: Int?
 }
 
 nonisolated struct UserInfo: Decodable {
