@@ -132,6 +132,11 @@ nonisolated struct GlucoseItem: Decodable, CustomStringConvertible {
         FactoryTimestamp
     }
 
+    /// FactoryTimestamp parsed to a Date, or nil if missing or unparseable.
+    var factoryDate: Date? {
+        FactoryTimestamp.flatMap(LibreLinkUpTimestamp.parse)
+    }
+
     var trendDirection: TrendArrowDirection? {
         guard let arrow = TrendArrow else { return nil }
         return TrendArrowDirection(rawValue: arrow)
@@ -191,25 +196,30 @@ nonisolated struct GraphData: Decodable {
 // MARK: - Timestamp Parsing
 
 nonisolated enum LibreLinkUpTimestamp {
-    /// Parses the FactoryTimestamp format: "M/d/yyyy h:mm:ss a" in UTC
-    static func parse(_ timestamp: String) -> Date? {
+    // DateFormatter is expensive to construct, and parse() runs for every
+    // reading on every sync (sorting, dedup, HealthKit writes, list rows), so
+    // build each formatter once. DateFormatter is thread-safe as long as it is
+    // not mutated after configuration, so these can be shared across actors.
+    private static let formatters: [DateFormatter] = [
+        makeFormatter("M/d/yyyy h:mm:ss a"),  // 12-hour with AM/PM (the usual FactoryTimestamp form)
+        makeFormatter("M/d/yyyy HH:mm:ss"),   // 24-hour fallback seen in some responses
+    ]
+
+    private static func makeFormatter(_ format: String) -> DateFormatter {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.timeZone = TimeZone(identifier: "UTC")
+        formatter.dateFormat = format
+        return formatter
+    }
 
-        // Try "M/d/yyyy h:mm:ss a" (12-hour with AM/PM)
-        formatter.dateFormat = "M/d/yyyy h:mm:ss a"
-        if let date = formatter.date(from: timestamp) {
-            return date
+    /// Parses the FactoryTimestamp format: "M/d/yyyy h:mm:ss a" in UTC
+    static func parse(_ timestamp: String) -> Date? {
+        for formatter in formatters {
+            if let date = formatter.date(from: timestamp) {
+                return date
+            }
         }
-
-        // Try with "tt" replaced — some responses use "AM"/"PM" directly
-        // Also try 24-hour format as fallback
-        formatter.dateFormat = "M/d/yyyy HH:mm:ss"
-        if let date = formatter.date(from: timestamp) {
-            return date
-        }
-
         return nil
     }
 }

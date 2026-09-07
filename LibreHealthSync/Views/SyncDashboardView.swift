@@ -96,8 +96,7 @@ struct SyncDashboardView: View {
                     }
                 }
 
-                if let timestamp = glucose.factoryTimestamp,
-                   let date = LibreLinkUpTimestamp.parse(timestamp) {
+                if let date = glucose.factoryDate {
                     Text(date, format: .dateTime.hour().minute().second())
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -202,8 +201,7 @@ struct SyncDashboardView: View {
 
             ForEach(appState.recentReadings.suffix(10).reversed(), id: \.FactoryTimestamp) { reading in
                 if let mgPerDl = reading.mgPerDl,
-                   let timestamp = reading.factoryTimestamp,
-                   let date = LibreLinkUpTimestamp.parse(timestamp) {
+                   let date = reading.factoryDate {
                     HStack {
                         Text(appState.displayUnit.format(mgPerDl: mgPerDl))
                             .font(.body.monospacedDigit())
