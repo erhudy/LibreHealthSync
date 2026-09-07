@@ -11,23 +11,34 @@ actor BackgroundSyncManager {
 
     private var audioPlayer: AVAudioPlayer?
     private var backgroundSyncTask: Task<Void, Never>?
-    
-    private var appState: AppState?
-    private var syncService: SyncService?
+
+    nonisolated private struct Dependencies: Sendable {
+        let appState: AppState
+        let syncService: SyncService
+    }
+
+    /// Set synchronously from the app's init, before any BGTaskScheduler launch
+    /// handler can fire. Guarded by a lock rather than actor isolation so the
+    /// registration path stays synchronous.
+    nonisolated private let dependencies = OSAllocatedUnfairLock<Dependencies?>(initialState: nil)
+
+    private enum BackgroundSyncError: Error {
+        case notConfigured
+    }
 
     nonisolated public let logger = Logger(subsystem: "com.erhudy.librehealthsync", category: "BackgroundSyncManager")
 
     private init() {}
-    
-    func setup(appState: AppState, syncService: SyncService) {
-        self.appState = appState
-        self.syncService = syncService
-    }
 
     // MARK: - BGTaskScheduler (infrequent fallback)
 
-    nonisolated func registerBackgroundTask() {
+    /// Stores the sync dependencies and registers the BGAppRefreshTask handler.
+    /// Must be called before the app finishes launching. When iOS launches the
+    /// app from a terminated state just to run the refresh task, no scene ever
+    /// connects, so the dependencies can't be injected from a view lifecycle.
+    nonisolated func registerBackgroundTask(appState: AppState, syncService: SyncService) {
         logger.trace("Calling BackgroundSyncManager.registerBackgroundTask")
+        dependencies.withLock { $0 = Dependencies(appState: appState, syncService: syncService) }
         BGTaskScheduler.shared.register(
             forTaskWithIdentifier: Self.taskIdentifier,
             using: nil
@@ -59,19 +70,41 @@ actor BackgroundSyncManager {
         logger.trace("Calling BackgroundSyncManager.handleBackgroundRefresh")
         scheduleBackgroundRefresh()
 
-        let syncTask = Task {
-            do {
-                try await performBackgroundSync()
-                task.setTaskCompleted(success: true)
-            } catch {
-                logger.error("Background refresh sync failed: \(error)")
-                task.setTaskCompleted(success: false)
+        // setTaskCompleted must be called exactly once, but both the sync task
+        // and the expiration handler can reach it; whichever gets there first wins.
+        let completed = OSAllocatedUnfairLock(initialState: false)
+        let finish: @Sendable (Bool) -> Void = { success in
+            let isFirst = completed.withLock { done -> Bool in
+                defer { done = true }
+                return !done
+            }
+            if isFirst {
+                task.setTaskCompleted(success: success)
             }
         }
 
+        // Install the expiration handler before any work starts so an early
+        // expiration can never race ahead of it.
+        let syncTask = OSAllocatedUnfairLock<Task<Void, Never>?>(initialState: nil)
         task.expirationHandler = {
-            syncTask.cancel()
-            task.setTaskCompleted(success: false)
+            syncTask.withLock { $0?.cancel() }
+            finish(false)
+        }
+
+        let started = Task {
+            do {
+                try await performBackgroundSync()
+                finish(true)
+            } catch {
+                logger.error("Background refresh sync failed: \(error)")
+                finish(false)
+            }
+        }
+        syncTask.withLock { $0 = started }
+        // If the task expired in the window before the sync task was recorded,
+        // the handler couldn't cancel it, so do that now.
+        if completed.withLock({ $0 }) {
+            started.cancel()
         }
     }
 
@@ -195,13 +228,13 @@ actor BackgroundSyncManager {
 
     private func performBackgroundSync() async throws {
         logger.trace("Calling BackgroundSyncManager.performBackgroundSync")
-        guard let syncService = syncService, let appState = appState else {
+        guard let dependencies = dependencies.withLock({ $0 }) else {
             logger.error("BackgroundSyncManager not configured with syncService or appState")
-            return
+            throw BackgroundSyncError.notConfigured
         }
-        
-        let result = try await syncService.sync()
-        
-        await appState.updateFromSyncResult(result)
+
+        let result = try await dependencies.syncService.sync()
+
+        await dependencies.appState.updateFromSyncResult(result)
     }
 }

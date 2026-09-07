@@ -2,7 +2,7 @@ import SwiftUI
 
 @main
 struct LibreHealthSyncApp: App {
-    @State private var appState = AppState()
+    @State private var appState: AppState
     @Environment(\.scenePhase) private var scenePhase
 
     private let apiService: LibreLinkUpService
@@ -11,20 +11,22 @@ struct LibreHealthSyncApp: App {
     private let liveActivityManager = LiveActivityManager.shared
 
     init() {
+        let appState = AppState()
+        _appState = State(initialValue: appState)
         self.apiService = LibreLinkUpService()
         self.healthKitService = HealthKitService()
         let api = self.apiService
         self.syncService = SyncService(api: api, healthKit: self.healthKitService, reloginHandler: { try await api.relogin() })
-        BackgroundSyncManager.shared.registerBackgroundTask()
+        // Wire the background manager here, not from a view's .task: when iOS
+        // launches the app from a terminated state to run a BGAppRefreshTask, no
+        // scene is connected and view lifecycle hooks never run.
+        BackgroundSyncManager.shared.registerBackgroundTask(appState: appState, syncService: syncService)
     }
 
     var body: some Scene {
         WindowGroup {
             ContentView(apiService: apiService, syncService: syncService, liveActivityManager: liveActivityManager)
                 .environment(appState)
-                .task {
-                    await BackgroundSyncManager.shared.setup(appState: appState, syncService: syncService)
-                }
         }
         .onChange(of: scenePhase) { _, newPhase in
             switch newPhase {
