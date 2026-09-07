@@ -5,6 +5,7 @@ nonisolated enum LibreLinkUpError: LocalizedError {
     case invalidURL
     case invalidResponse
     case authenticationFailed(String)
+    case sessionExpired
     case termsOfUseRequired
     case networkError(Error)
     case decodingError(Error)
@@ -19,6 +20,8 @@ nonisolated enum LibreLinkUpError: LocalizedError {
             return "Invalid response from server."
         case .authenticationFailed(let message):
             return "Authentication failed: \(message)"
+        case .sessionExpired:
+            return "Your LibreLinkUp session expired and could not be renewed. Please log out and log in again."
         case .termsOfUseRequired:
             return "You must accept the Terms of Use in the LibreLinkUp app before continuing."
         case .networkError(let error):
@@ -274,9 +277,10 @@ actor LibreLinkUpService: GlucoseDataProvider {
             throw LibreLinkUpError.invalidResponse
         }
 
-        // Handle 401 — token may be expired, try re-login once
+        // 401 means the JWT expired or was invalidated server-side. SyncService
+        // catches this, re-logs in with the stored credentials, and retries once.
         if httpResponse.statusCode == 401 {
-            throw LibreLinkUpError.authenticationFailed("Token expired (HTTP 401).")
+            throw LibreLinkUpError.sessionExpired
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {

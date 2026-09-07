@@ -24,14 +24,7 @@ actor SyncService {
 
     /// Fetch glucose data for the logged-in account, deduplicate, and write new readings to HealthKit.
     func sync() async throws -> SyncResult {
-        // Fetch connections and use the first one
-        let connections = try await api.fetchConnections()
-        guard let connection = connections.first else {
-            throw LibreLinkUpError.noData
-        }
-
-        // Fetch graph data from API
-        let graphData = try await api.fetchGraphData(connectionId: connection.patientId)
+        let (connection, graphData) = try await fetchWithReloginRetry()
 
         // Gather graph history readings (current measurement is tracked separately)
         var allReadings: [GlucoseItem] = []
@@ -89,6 +82,27 @@ actor SyncService {
             allReadings: allReadingsForWrite,
             connectionName: connection.displayName
         )
+    }
+
+    /// Fetch the first connection and its graph data. If the API reports the
+    /// session has expired, re-login once with the stored credentials and retry.
+    private func fetchWithReloginRetry() async throws -> (Connection, GraphData) {
+        do {
+            return try await fetchConnectionAndGraph()
+        } catch LibreLinkUpError.sessionExpired where reloginHandler != nil {
+            try await relogin()
+            return try await fetchConnectionAndGraph()
+        }
+    }
+
+    private func fetchConnectionAndGraph() async throws -> (Connection, GraphData) {
+        // Use the first connection
+        let connections = try await api.fetchConnections()
+        guard let connection = connections.first else {
+            throw LibreLinkUpError.noData
+        }
+        let graphData = try await api.fetchGraphData(connectionId: connection.patientId)
+        return (connection, graphData)
     }
 
     /// Attempt to re-authenticate with stored credentials.
