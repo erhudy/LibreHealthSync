@@ -75,6 +75,11 @@ final class AppState {
         userId = keychain.getUserId()
     }
 
+    /// True when there is an account to sync: logged in with the terms accepted.
+    var isReadyToSync: Bool {
+        isLoggedIn && hasAcceptedTerms
+    }
+
     func acceptTerms() {
         hasAcceptedTerms = true
         UserDefaults.standard.set(true, forKey: "hasAcceptedTerms")
@@ -93,6 +98,12 @@ final class AppState {
     func logout() {
         let keychain = KeychainService()
         keychain.deleteAll()
+        // Nothing left to sync: stop the silent-audio loop if it is running and
+        // drop any pending BG refresh so we don't poll the API without a token.
+        Task {
+            await BackgroundSyncManager.shared.stopBackgroundSyncLoop()
+            await BackgroundSyncManager.shared.cancelPendingRefreshes()
+        }
         isLoggedIn = false
         userId = nil
         connectionName = nil

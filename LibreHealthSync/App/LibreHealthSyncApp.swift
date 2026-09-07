@@ -31,6 +31,10 @@ struct LibreHealthSyncApp: App {
         .onChange(of: scenePhase) { _, newPhase in
             switch newPhase {
             case .background:
+                // Before login (or after logout) there is nothing to sync, so don't
+                // keep the process alive with silent audio or schedule refreshes
+                // that would only fail with 401.
+                guard appState.isReadyToSync else { break }
                 Task {
                     if appState.aggressiveBackgroundSync {
                         // Start a continuous sync loop using silent audio to keep the app alive

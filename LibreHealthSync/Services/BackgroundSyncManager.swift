@@ -66,8 +66,20 @@ actor BackgroundSyncManager {
         BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: Self.taskIdentifier)
     }
 
-    private func handleBackgroundRefresh(_ task: BGAppRefreshTask) {
+    /// Whether there is an account to sync: logged in with the terms accepted.
+    private func isReadyToSync() async -> Bool {
+        guard let dependencies = dependencies.withLock({ $0 }) else { return false }
+        return await dependencies.appState.isReadyToSync
+    }
+
+    private func handleBackgroundRefresh(_ task: BGAppRefreshTask) async {
         logger.trace("Calling BackgroundSyncManager.handleBackgroundRefresh")
+        guard await isReadyToSync() else {
+            // Nothing to sync and no reason to reschedule; the next login backgrounding will.
+            logger.trace("Skipping background refresh: not logged in")
+            task.setTaskCompleted(success: true)
+            return
+        }
         scheduleBackgroundRefresh()
 
         // setTaskCompleted must be called exactly once, but both the sync task
@@ -231,6 +243,10 @@ actor BackgroundSyncManager {
         guard let dependencies = dependencies.withLock({ $0 }) else {
             logger.error("BackgroundSyncManager not configured with syncService or appState")
             throw BackgroundSyncError.notConfigured
+        }
+        guard await dependencies.appState.isReadyToSync else {
+            logger.trace("Skipping background sync: not logged in")
+            return
         }
 
         let result = try await dependencies.syncService.sync()
