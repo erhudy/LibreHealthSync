@@ -66,6 +66,11 @@ actor BackgroundSyncManager {
         BGTaskScheduler.shared.cancel(taskRequestWithIdentifier: Self.taskIdentifier)
     }
 
+    private func lastSyncDate() async -> Date? {
+        guard let dependencies = dependencies.withLock({ $0 }) else { return nil }
+        return await dependencies.appState.lastSyncDate
+    }
+
     /// Whether there is an account to sync: logged in with the terms accepted.
     private func isReadyToSync() async -> Bool {
         guard let dependencies = dependencies.withLock({ $0 }) else { return false }
@@ -130,6 +135,17 @@ actor BackgroundSyncManager {
         startSilentAudio()
 
         backgroundSyncTask = Task {
+            // The foreground timer has very likely just synced, so wait out the
+            // remainder of the interval before the first background sync rather
+            // than hitting the API twice in quick succession.
+            if let lastSync = await lastSyncDate() {
+                let remaining = TimeInterval(intervalSeconds) - Date().timeIntervalSince(lastSync)
+                if remaining > 0 {
+                    try? await Task.sleep(for: .seconds(remaining))
+                    if Task.isCancelled { return }
+                }
+            }
+
             while !Task.isCancelled {
                 do {
                     try await performBackgroundSync()

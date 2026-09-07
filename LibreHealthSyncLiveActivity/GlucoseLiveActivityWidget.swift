@@ -9,7 +9,7 @@ struct GlucoseLiveActivityWidget: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: GlucoseLiveActivityAttributes.self) { context in
             // Lock Screen / StandBy presentation
-            let _ = Self.logger.trace("GlucoseLiveActivityWidget lock screen closure called — glucoseMgPerDl: \(context.state.glucoseMgPerDl, privacy: .public), trendArrow: \(context.state.trendArrowRawValue, privacy: .public), readingTimestamp: \(context.state.readingTimestamp, privacy: .public), displayUnit: \(context.state.displayUnitRawValue, privacy: .public)")
+            let _ = Self.logger.trace("GlucoseLiveActivityWidget lock screen closure called — glucoseMgPerDl: \(context.state.glucoseMgPerDl, privacy: .private), trendArrow: \(context.state.trendArrowRawValue, privacy: .private), readingTimestamp: \(context.state.readingTimestamp, privacy: .private), displayUnit: \(context.state.displayUnitRawValue, privacy: .private)")
             GlucoseLockScreenView(context: context)
                 .activityBackgroundTint(Color(.systemBackground).opacity(0.3))
 
@@ -17,7 +17,7 @@ struct GlucoseLiveActivityWidget: Widget {
             DynamicIsland {
                 // Expanded regions
                 DynamicIslandExpandedRegion(.leading) {
-                    let _ = Self.logger.trace("GlucoseLiveActivityWidget dynamicIsland rendered — glucoseMgPerDl: \(context.state.glucoseMgPerDl, privacy: .public), trendArrow: \(context.state.trendArrowRawValue, privacy: .public), readingTimestamp: \(context.state.readingTimestamp, privacy: .public), displayUnit: \(context.state.displayUnitRawValue, privacy: .public)")
+                    let _ = Self.logger.trace("GlucoseLiveActivityWidget dynamicIsland rendered — glucoseMgPerDl: \(context.state.glucoseMgPerDl, privacy: .private), trendArrow: \(context.state.trendArrowRawValue, privacy: .private), readingTimestamp: \(context.state.readingTimestamp, privacy: .private), displayUnit: \(context.state.displayUnitRawValue, privacy: .private)")
                     Text(GlucoseDisplayHelpers.formatGlucose(
                         mgPerDl: context.state.glucoseMgPerDl,
                         unitRaw: context.state.displayUnitRawValue

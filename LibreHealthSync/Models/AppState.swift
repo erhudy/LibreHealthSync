@@ -20,7 +20,6 @@ final class AppState {
     var errorMessage: String?
     var showError: Bool = false
     var hasAcceptedTerms: Bool = false
-    var needsTermsAcceptance: Bool = false
 
     // Settings
     var displayUnit: GlucoseDisplayUnit = .mgdl {
@@ -34,7 +33,9 @@ final class AppState {
             UserDefaults.standard.set(autoRefreshIntervalSeconds, forKey: "autoRefreshIntervalSeconds")
         }
     }
-    var aggressiveBackgroundSync: Bool = true {
+    // Off by default: the silent-audio loop is a battery cost the README warns
+    // about, so it's opt-in.
+    var aggressiveBackgroundSync: Bool = false {
         didSet {
             UserDefaults.standard.set(aggressiveBackgroundSync, forKey: "aggressiveBackgroundSync")
         }

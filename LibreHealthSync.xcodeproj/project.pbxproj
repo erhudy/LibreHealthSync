@@ -469,7 +469,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = LibreHealthSync;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = LibreHealthSync/LibreHealthSync.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -477,7 +476,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LibreHealthSync/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "LibreHealth Sync reads your health data to check for existing glucose entries and avoid duplicates.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "LibreHealth Sync does not read any Health data. It only writes blood glucose readings from your LibreLinkUp account.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "LibreHealth Sync writes blood glucose readings from your LibreLinkUp account to Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -510,7 +509,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = LibreHealthSync;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = LibreHealthSync/LibreHealthSync.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -518,7 +516,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = LibreHealthSync/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "LibreHealth Sync reads your health data to check for existing glucose entries and avoid duplicates.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "LibreHealth Sync does not read any Health data. It only writes blood glucose readings from your LibreLinkUp account.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "LibreHealth Sync writes blood glucose readings from your LibreLinkUp account to Apple Health.";
 				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

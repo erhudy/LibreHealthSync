@@ -19,8 +19,7 @@ actor HealthKitService: GlucoseWriter {
     }
 
     /// Extracts sendable glucose readings from GlucoseItems.
-    /// Call this on the MainActor before passing to the actor.
-    static func extractReadings(from items: [GlucoseItem]) -> [GlucoseReading] {
+    nonisolated static func extractReadings(from items: [GlucoseItem]) -> [GlucoseReading] {
         items.compactMap { item in
             guard let mgPerDl = item.mgPerDl,
                   let timestamp = item.factoryTimestamp else {
@@ -48,6 +47,13 @@ actor HealthKitService: GlucoseWriter {
         let typesToShare: Set<HKSampleType> = [glucoseType]
 
         try await healthStore.requestAuthorization(toShare: typesToShare, read: [])
+
+        // The prompt completing says nothing about the answer; check the
+        // resulting status so a denial surfaces as a clear message rather than
+        // a raw HKError from the first save().
+        guard healthStore.authorizationStatus(for: glucoseType) == .sharingAuthorized else {
+            throw HealthKitError.writeAccessDenied
+        }
         isAuthorized = true
     }
 
@@ -108,6 +114,7 @@ actor HealthKitService: GlucoseWriter {
 enum HealthKitError: LocalizedError {
     case notAvailable
     case invalidType
+    case writeAccessDenied
     case writeFailed(Error)
 
     var errorDescription: String? {
@@ -116,6 +123,8 @@ enum HealthKitError: LocalizedError {
             return "HealthKit is not available on this device."
         case .invalidType:
             return "Invalid HealthKit quantity type."
+        case .writeAccessDenied:
+            return "Apple Health write access is turned off. Enable Blood Glucose for LibreHealth Sync under Settings > Health > Data Access & Devices."
         case .writeFailed(let error):
             return "Failed to write to HealthKit: \(error.localizedDescription)"
         }
