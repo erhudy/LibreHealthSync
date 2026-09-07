@@ -4,12 +4,16 @@ import Foundation
 nonisolated enum LibreLinkUpError: LocalizedError {
     case invalidURL
     case invalidResponse
+    case httpError(statusCode: Int)
+    case rateLimited(retryAfterSeconds: Int?)
+    case incorrectCredentials
     case authenticationFailed(String)
+    case sessionExpired
     case termsOfUseRequired
     case networkError(Error)
     case decodingError(Error)
     case noData
-    case regionRedirect(LibreLinkUpRegion)
+    case unsupportedRegion(String)
 
     var errorDescription: String? {
         switch self {
@@ -17,8 +21,19 @@ nonisolated enum LibreLinkUpError: LocalizedError {
             return "Invalid API URL."
         case .invalidResponse:
             return "Invalid response from server."
+        case .httpError(let statusCode):
+            return "LibreLinkUp returned HTTP \(statusCode)."
+        case .rateLimited(let retryAfterSeconds):
+            if let seconds = retryAfterSeconds {
+                return "LibreLinkUp is rate limiting this account. Try again in \(seconds) seconds."
+            }
+            return "LibreLinkUp is rate limiting this account. Try again in a few minutes."
+        case .incorrectCredentials:
+            return "Incorrect email or password."
         case .authenticationFailed(let message):
             return "Authentication failed: \(message)"
+        case .sessionExpired:
+            return "Your LibreLinkUp session expired and could not be renewed. Please log out and log in again."
         case .termsOfUseRequired:
             return "You must accept the Terms of Use in the LibreLinkUp app before continuing."
         case .networkError(let error):
@@ -27,8 +42,8 @@ nonisolated enum LibreLinkUpError: LocalizedError {
             return "Failed to parse response: \(error.localizedDescription)"
         case .noData:
             return "No data returned from server."
-        case .regionRedirect(let region):
-            return "Redirecting to \(region.displayName) server."
+        case .unsupportedRegion(let region):
+            return "Your account is on the \(region.uppercased()) LibreLinkUp server, which this app doesn't support yet."
         }
     }
 }
@@ -104,28 +119,38 @@ actor LibreLinkUpService: GlucoseDataProvider {
             throw LibreLinkUpError.termsOfUseRequired
         }
 
-        // Check for regional redirect
-        if let loginData = response.data, loginData.redirect == true,
-           let regionString = loginData.region {
-            if let redirectRegion = LibreLinkUpRegion.allCases.first(where: {
-                $0.rawValue.contains(regionString.lowercased())
-            }) {
-                // Retry login with the correct regional server
-                return try await login(email: email, password: password, region: redirectRegion)
-            }
+        // Some lockouts are reported in the JSON status rather than the HTTP status.
+        if response.status == 429 || response.status == 430 {
+            throw LibreLinkUpError.rateLimited(retryAfterSeconds: response.data?.lockout)
         }
 
-        // Also check top-level redirect
-        if response.redirect == true, let regionString = response.region {
-            if let redirectRegion = LibreLinkUpRegion.allCases.first(where: {
+        // Regional redirect: the region can appear under data or at the top level.
+        // Only the regions in LibreLinkUpRegion are supported; anything else is a
+        // clear "not supported yet" rather than a confusing missing-ticket error.
+        let redirectedTo = (response.data?.redirect == true ? response.data?.region : nil)
+            ?? (response.redirect == true ? response.region : nil)
+        if let regionString = redirectedTo {
+            guard let redirectRegion = LibreLinkUpRegion.allCases.first(where: {
                 $0.rawValue.contains(regionString.lowercased())
-            }) {
-                return try await login(email: email, password: password, region: redirectRegion)
+            }) else {
+                throw LibreLinkUpError.unsupportedRegion(regionString)
             }
+            // Retry login with the correct regional server (guarding against a
+            // redirect back to the server we just used, which would loop forever).
+            guard redirectRegion != region else {
+                throw LibreLinkUpError.authenticationFailed("Server redirected to \(redirectRegion.displayName) repeatedly.")
+            }
+            return try await login(email: email, password: password, region: redirectRegion)
         }
 
-        guard response.status == 0 || response.status == 2 else {
-            throw LibreLinkUpError.authenticationFailed("Status: \(response.status)")
+        // Status 2 ("notAuthenticated") is how LibreLinkUp reports a bad password.
+        if response.status == 2 {
+            throw LibreLinkUpError.incorrectCredentials
+        }
+
+        guard response.status == 0 else {
+            let detail = response.data?.message.map { " (\($0))" } ?? ""
+            throw LibreLinkUpError.authenticationFailed("LibreLinkUp returned status \(response.status)\(detail).")
         }
 
         // Extract auth ticket — could be at data.authTicket or top-level ticket
@@ -274,15 +299,30 @@ actor LibreLinkUpService: GlucoseDataProvider {
             throw LibreLinkUpError.invalidResponse
         }
 
-        // Handle 401 — token may be expired, try re-login once
+        // 401 means the JWT expired or was invalidated server-side. SyncService
+        // catches this, re-logs in with the stored credentials, and retries once.
         if httpResponse.statusCode == 401 {
-            throw LibreLinkUpError.authenticationFailed("Token expired (HTTP 401).")
+            throw LibreLinkUpError.sessionExpired
+        }
+
+        // LibreLinkUp uses 429 (and 430) for rate limits and login lockouts, with
+        // the wait either in a Retry-After header or a `lockout` field in the body.
+        if httpResponse.statusCode == 429 || httpResponse.statusCode == 430 {
+            throw LibreLinkUpError.rateLimited(retryAfterSeconds: Self.retryAfterSeconds(httpResponse, body: data))
         }
 
         guard (200...299).contains(httpResponse.statusCode) else {
-            throw LibreLinkUpError.invalidResponse
+            throw LibreLinkUpError.httpError(statusCode: httpResponse.statusCode)
         }
 
         return data
+    }
+
+    nonisolated private static func retryAfterSeconds(_ response: HTTPURLResponse, body: Data) -> Int? {
+        if let header = response.value(forHTTPHeaderField: "Retry-After"),
+           let seconds = Int(header.trimmingCharacters(in: .whitespaces)) {
+            return seconds
+        }
+        return (try? JSONDecoder().decode(RateLimitResponse.self, from: body))?.data?.lockout
     }
 }

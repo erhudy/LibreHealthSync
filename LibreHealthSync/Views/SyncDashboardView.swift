@@ -96,8 +96,7 @@ struct SyncDashboardView: View {
                     }
                 }
 
-                if let timestamp = glucose.factoryTimestamp,
-                   let date = LibreLinkUpTimestamp.parse(timestamp) {
+                if let date = glucose.factoryDate {
                     Text(date, format: .dateTime.hour().minute().second())
                         .font(.caption)
                         .foregroundStyle(.secondary)
@@ -202,8 +201,7 @@ struct SyncDashboardView: View {
 
             ForEach(appState.recentReadings.suffix(10).reversed(), id: \.FactoryTimestamp) { reading in
                 if let mgPerDl = reading.mgPerDl,
-                   let timestamp = reading.factoryTimestamp,
-                   let date = LibreLinkUpTimestamp.parse(timestamp) {
+                   let date = reading.factoryDate {
                     HStack {
                         Text(appState.displayUnit.format(mgPerDl: mgPerDl))
                             .font(.body.monospacedDigit())
@@ -256,16 +254,31 @@ struct SyncDashboardView: View {
     }
 
     private func performSync() async {
+        // Don't overlap two syncs (e.g. Sync Now tapped while the timer's sync is in flight).
+        guard !appState.isSyncing else { return }
         appState.isSyncing = true
         appState.clearError()
+        defer { appState.isSyncing = false }
 
         do {
             let result = try await syncService.sync()
             await appState.updateFromSyncResult(result)
         } catch {
+            // The timer task that runs this sync is cancelled whenever the scene
+            // goes inactive or the refresh interval changes. That cancellation
+            // surfaces as URLError.cancelled from the request; it isn't a failure
+            // the user needs an alert for.
+            if Task.isCancelled || Self.isCancellation(error) { return }
             appState.setError(error.localizedDescription)
         }
+    }
 
-        appState.isSyncing = false
+    private static func isCancellation(_ error: Error) -> Bool {
+        if error is CancellationError { return true }
+        if case LibreLinkUpError.networkError(let underlying) = error,
+           (underlying as? URLError)?.code == .cancelled {
+            return true
+        }
+        return false
     }
 }

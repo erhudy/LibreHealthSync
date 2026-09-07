@@ -11,9 +11,19 @@ actor MockGlucoseDataProvider: GlucoseDataProvider {
     var graphDataToReturn: GraphData = GraphData(connection: nil, activeSensors: nil, graphData: nil, logbookData: nil)
     var fetchConnectionsCallCount = 0
     var fetchGraphDataCallCount = 0
+    /// Thrown by the next fetchConnections call only, then cleared.
+    var errorForNextFetchConnections: Error?
 
     func setConnections(_ connections: [Connection]) {
         connectionsToReturn = connections
+    }
+
+    func failNextFetchConnections(with error: Error) {
+        errorForNextFetchConnections = error
+    }
+
+    func getFetchConnectionsCallCount() -> Int {
+        fetchConnectionsCallCount
     }
 
     func setGraphData(_ graphData: GraphData) {
@@ -22,6 +32,10 @@ actor MockGlucoseDataProvider: GlucoseDataProvider {
 
     func fetchConnections() async throws -> [Connection] {
         fetchConnectionsCallCount += 1
+        if let error = errorForNextFetchConnections {
+            errorForNextFetchConnections = nil
+            throw error
+        }
         return connectionsToReturn
     }
 
@@ -96,8 +110,8 @@ final class SyncServiceTests: XCTestCase {
         super.tearDown()
     }
 
-    private func makeSyncService() -> SyncService {
-        SyncService(api: mockAPI, healthKit: mockWriter, defaults: defaults)
+    private func makeSyncService(reloginHandler: (@Sendable () async throws -> Void)? = nil) -> SyncService {
+        SyncService(api: mockAPI, healthKit: mockWriter, defaults: defaults, reloginHandler: reloginHandler)
     }
 
     // MARK: - Test Cases
@@ -214,4 +228,62 @@ final class SyncServiceTests: XCTestCase {
         let savedTimestamp = defaults.string(forKey: "lastSyncTimestamp")
         XCTAssertEqual(savedTimestamp, "1/1/2025 12:10:00 AM")
     }
+
+    /// An expired session should trigger exactly one re-login and a retried fetch.
+    func testSessionExpiredTriggersReloginAndRetry() async throws {
+        let items = [makeGlucoseItem(mgPerDl: 100, timestamp: "1/1/2025 12:00:00 AM")]
+        await mockAPI.setConnections([makeConnection()])
+        await mockAPI.setGraphData(GraphData(connection: nil, activeSensors: nil, graphData: items, logbookData: nil))
+        await mockAPI.failNextFetchConnections(with: LibreLinkUpError.sessionExpired)
+
+        let reloginCount = ReloginCounter()
+        let service = makeSyncService(reloginHandler: { await reloginCount.increment() })
+        let result = try await service.sync()
+
+        XCTAssertEqual(result.readingsWritten, 1)
+        let relogins = await reloginCount.value
+        XCTAssertEqual(relogins, 1)
+        let fetches = await mockAPI.getFetchConnectionsCallCount()
+        XCTAssertEqual(fetches, 2)
+    }
+
+    /// If the retried fetch still reports an expired session, the error surfaces.
+    func testSessionExpiredAfterReloginPropagates() async throws {
+        await mockAPI.setConnections([makeConnection()])
+        await mockAPI.failNextFetchConnections(with: LibreLinkUpError.sessionExpired)
+
+        let api = mockAPI!
+        let service = makeSyncService(reloginHandler: {
+            // Simulate the re-login succeeding but the new token being rejected too.
+            await api.failNextFetchConnections(with: LibreLinkUpError.sessionExpired)
+        })
+
+        do {
+            _ = try await service.sync()
+            XCTFail("Expected sessionExpired to propagate")
+        } catch LibreLinkUpError.sessionExpired {
+            // expected
+        }
+    }
+
+    /// Without a relogin handler, an expired session is reported immediately.
+    func testSessionExpiredWithoutHandlerPropagates() async throws {
+        await mockAPI.setConnections([makeConnection()])
+        await mockAPI.failNextFetchConnections(with: LibreLinkUpError.sessionExpired)
+
+        let service = makeSyncService()
+        do {
+            _ = try await service.sync()
+            XCTFail("Expected sessionExpired to propagate")
+        } catch LibreLinkUpError.sessionExpired {
+            // expected
+        }
+        let fetches = await mockAPI.getFetchConnectionsCallCount()
+        XCTAssertEqual(fetches, 1)
+    }
+}
+
+private actor ReloginCounter {
+    var value = 0
+    func increment() { value += 1 }
 }

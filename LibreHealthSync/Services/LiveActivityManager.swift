@@ -22,8 +22,7 @@ final class LiveActivityManager {
         logger.trace("Calling LiveActivityManager.updateOrCreateActivity")
 
         guard let mgPerDl = glucose.mgPerDl,
-              let timestamp = glucose.factoryTimestamp,
-              let readingDate = LibreLinkUpTimestamp.parse(timestamp) else { return }
+              let readingDate = glucose.factoryDate else { return }
 
         let state = GlucoseLiveActivityAttributes.ContentState(
             glucoseMgPerDl: mgPerDl,

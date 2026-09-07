@@ -85,9 +85,6 @@ struct LoginView: View {
             appState.userId = result.userId
             appState.isLoggedIn = true
         } catch let error as LibreLinkUpError {
-            if case .termsOfUseRequired = error {
-                appState.needsTermsAcceptance = true
-            }
             errorMessage = error.errorDescription
         } catch {
             errorMessage = error.localizedDescription

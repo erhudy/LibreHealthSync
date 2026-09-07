@@ -42,7 +42,7 @@ A native iOS app (Swift) that reads continuous glucose monitor (CGM) data from A
 - **Error handling**: Auth failures, network errors, expired tokens, API changes
 - **Deduplication**: Use reading timestamps as unique keys to prevent duplicate HealthKit entries
 - **Terms of service**: This uses an unofficial, reverse-engineered API — it may break if Abbott changes endpoints
-- **Background activity**: The application requires the "Background Fetch", "Background Processing", and "Audio, AirPlay and Picture in Picture" background activity capabilities to allow syncing to happen on a regular basis even when the app is backgrounded
+- **Background activity**: The application requires the "Background Fetch" and "Audio, AirPlay and Picture in Picture" background activity capabilities to allow syncing to happen on a regular basis even when the app is backgrounded
 
 ## Existing References
 
