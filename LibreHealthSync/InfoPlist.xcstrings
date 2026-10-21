@@ -1,0 +1,40 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "NSHealthShareUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LibreHealth Sync liest keine Gesundheitsdaten. Die App schreibt ausschließlich Blutzuckermesswerte aus deinem LibreLinkUp-Konto."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LibreHealth Sync does not read any Health data. It only writes blood glucose readings from your LibreLinkUp account."
+          }
+        }
+      }
+    },
+    "NSHealthUpdateUsageDescription" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LibreHealth Sync schreibt Blutzuckermesswerte aus deinem LibreLinkUp-Konto in Apple Health."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LibreHealth Sync writes blood glucose readings from your LibreLinkUp account to Apple Health."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

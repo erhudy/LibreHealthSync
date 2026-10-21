@@ -31,7 +31,7 @@ struct FAQView: View {
 }
 
 private struct FAQItem: View {
-    let question: String
+    let question: LocalizedStringKey
     let answer: LocalizedStringKey
 
     @State private var isExpanded = false

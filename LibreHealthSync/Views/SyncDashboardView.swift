@@ -30,7 +30,7 @@ struct SyncDashboardView: View {
                 }
                 .padding()
             }
-            .navigationTitle(appState.connectionName ?? "Dashboard")
+            .navigationTitle(appState.connectionName.map { Text(verbatim: $0) } ?? Text("Dashboard"))
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 16) {
@@ -53,7 +53,11 @@ struct SyncDashboardView: View {
             )) {
                 Button("OK") { appState.clearError() }
             } message: {
-                Text(appState.errorMessage ?? "Unknown error")
+                if let errorMessage = appState.errorMessage {
+                    Text(verbatim: errorMessage)
+                } else {
+                    Text("Unknown error")
+                }
             }
             .task {
                 await performSync()
@@ -90,7 +94,7 @@ struct SyncDashboardView: View {
                     if let trend = glucose.trendDirection {
                         Text(trend.symbol)
                             .font(.title2)
-                        Text(trend.description)
+                        Text(trend.localizedDescription)
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
@@ -171,7 +175,7 @@ struct SyncDashboardView: View {
                     Text("Last sync:")
                     Spacer()
                     let lastSync = Text(lastSync, style: .relative)
-                    Text("\(lastSync ) ago")
+                    Text("\(lastSync) ago")
                 }
                 .font(.subheadline)
 

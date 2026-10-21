@@ -18,32 +18,32 @@ nonisolated enum LibreLinkUpError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidURL:
-            return "Invalid API URL."
+            return String(localized: "Invalid API URL.")
         case .invalidResponse:
-            return "Invalid response from server."
+            return String(localized: "Invalid response from server.")
         case .httpError(let statusCode):
-            return "LibreLinkUp returned HTTP \(statusCode)."
+            return String(localized: "LibreLinkUp returned HTTP \(statusCode).")
         case .rateLimited(let retryAfterSeconds):
             if let seconds = retryAfterSeconds {
-                return "LibreLinkUp is rate limiting this account. Try again in \(seconds) seconds."
+                return String(localized: "LibreLinkUp is rate limiting this account. Try again in \(seconds) seconds.")
             }
-            return "LibreLinkUp is rate limiting this account. Try again in a few minutes."
+            return String(localized: "LibreLinkUp is rate limiting this account. Try again in a few minutes.")
         case .incorrectCredentials:
-            return "Incorrect email or password."
+            return String(localized: "Incorrect email or password.")
         case .authenticationFailed(let message):
-            return "Authentication failed: \(message)"
+            return String(localized: "Authentication failed: \(message)")
         case .sessionExpired:
-            return "Your LibreLinkUp session expired and could not be renewed. Please log out and log in again."
+            return String(localized: "Your LibreLinkUp session expired and could not be renewed. Please log out and log in again.")
         case .termsOfUseRequired:
-            return "You must accept the Terms of Use in the LibreLinkUp app before continuing."
+            return String(localized: "You must accept the Terms of Use in the LibreLinkUp app before continuing.")
         case .networkError(let error):
-            return "Network error: \(error.localizedDescription)"
+            return String(localized: "Network error: \(error.localizedDescription)")
         case .decodingError(let error):
-            return "Failed to parse response: \(error.localizedDescription)"
+            return String(localized: "Failed to parse response: \(error.localizedDescription)")
         case .noData:
-            return "No data returned from server."
+            return String(localized: "No data returned from server.")
         case .unsupportedRegion(let region):
-            return "Your account is on the \(region.uppercased()) LibreLinkUp server, which this app doesn't support yet."
+            return String(localized: "Your account is on the \(region.uppercased()) LibreLinkUp server, which this app doesn't support yet.")
         }
     }
 }
@@ -138,7 +138,7 @@ actor LibreLinkUpService: GlucoseDataProvider {
             // Retry login with the correct regional server (guarding against a
             // redirect back to the server we just used, which would loop forever).
             guard redirectRegion != region else {
-                throw LibreLinkUpError.authenticationFailed("Server redirected to \(redirectRegion.displayName) repeatedly.")
+                throw LibreLinkUpError.authenticationFailed(String(localized: "Server redirected to \(redirectRegion.displayName) repeatedly."))
             }
             return try await login(email: email, password: password, region: redirectRegion)
         }
@@ -150,16 +150,16 @@ actor LibreLinkUpService: GlucoseDataProvider {
 
         guard response.status == 0 else {
             let detail = response.data?.message.map { " (\($0))" } ?? ""
-            throw LibreLinkUpError.authenticationFailed("LibreLinkUp returned status \(response.status)\(detail).")
+            throw LibreLinkUpError.authenticationFailed(String(localized: "LibreLinkUp returned status \(response.status)\(detail)."))
         }
 
         // Extract auth ticket — could be at data.authTicket or top-level ticket
         guard let ticket = response.data?.authTicket ?? response.ticket else {
-            throw LibreLinkUpError.authenticationFailed("No auth ticket in response.")
+            throw LibreLinkUpError.authenticationFailed(String(localized: "No auth ticket in response."))
         }
 
         guard let user = response.data?.user else {
-            throw LibreLinkUpError.authenticationFailed("No user info in response.")
+            throw LibreLinkUpError.authenticationFailed(String(localized: "No user info in response."))
         }
 
         // Store credentials
@@ -227,7 +227,7 @@ actor LibreLinkUpService: GlucoseDataProvider {
         guard let email = keychain.getEmail(),
               let password = keychain.getPassword()
         else {
-            throw LibreLinkUpError.authenticationFailed("No stored credentials for re-login.")
+            throw LibreLinkUpError.authenticationFailed(String(localized: "No stored credentials for re-login."))
         }
         _ = try await login(email: email, password: password, region: region)
     }

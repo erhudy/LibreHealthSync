@@ -1,0 +1,1017 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "--" : {
+      "shouldTranslate" : false
+    },
+    "%@ ago" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vor %@"
+          }
+        }
+      }
+    },
+    "%lld" : {
+      "shouldTranslate" : false
+    },
+    "1 minute" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 Minute"
+          }
+        }
+      }
+    },
+    "2 minutes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2 Minuten"
+          }
+        }
+      }
+    },
+    "5 minutes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "5 Minuten"
+          }
+        }
+      }
+    },
+    "10 minutes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "10 Minuten"
+          }
+        }
+      }
+    },
+    "15 minutes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "15 Minuten"
+          }
+        }
+      }
+    },
+    "30 minutes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 Minuten"
+          }
+        }
+      }
+    },
+    "A red border appears on the Live Activity when the displayed reading is older than this threshold." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein roter Rahmen erscheint um die Live-Aktivität, wenn der angezeigte Messwert älter als dieser Schwellenwert ist."
+          }
+        }
+      }
+    },
+    "About" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Über"
+          }
+        }
+      }
+    },
+    "Accept" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akzeptieren"
+          }
+        }
+      }
+    },
+    "Account" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konto"
+          }
+        }
+      }
+    },
+    "Apple Health write access is turned off. Enable Blood Glucose for LibreHealth Sync under Settings > Health > Data Access & Devices." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Schreibzugriff auf Apple Health ist deaktiviert. Aktiviere Blutzucker für LibreHealth Sync unter Einstellungen > Health > Datenzugriff & Geräte."
+          }
+        }
+      }
+    },
+    "Are you sure you want to log out? Your stored credentials will be removed." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Möchtest du dich wirklich abmelden? Deine gespeicherten Zugangsdaten werden entfernt."
+          }
+        }
+      }
+    },
+    "Authentication failed: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Authentifizierung fehlgeschlagen: %@"
+          }
+        }
+      }
+    },
+    "Auto Refresh" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatische Aktualisierung"
+          }
+        }
+      }
+    },
+    "Auto Refresh Interval" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktualisierungsintervall"
+          }
+        }
+      }
+    },
+    "Build" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Build"
+          }
+        }
+      }
+    },
+    "By accepting these terms, you acknowledge that you understand and accept the risks associated with using this unofficial application." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durch das Akzeptieren dieser Bedingungen bestätigst du, dass du die mit der Nutzung dieser inoffiziellen Anwendung verbundenen Risiken verstehst und akzeptierst."
+          }
+        }
+      }
+    },
+    "Cancel" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        }
+      }
+    },
+    "Constant Background Sync" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Durchgehende Hintergrundsynchronisierung"
+          }
+        }
+      }
+    },
+    "Constant background sync plays a silent audio file to keep the app running continuously. This updates more frequently but uses more battery. When off, iOS controls how often the app refreshes in the background. Auto Refresh Interval setting is not honored when the app is backgrounded because of how iOS handles backgrounded tasks." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die durchgehende Hintergrundsynchronisierung spielt eine lautlose Audiodatei ab, damit die App dauerhaft weiterläuft. Dadurch wird häufiger aktualisiert, was jedoch mehr Akku verbraucht. Wenn diese Option deaktiviert ist, steuert iOS, wie oft sich die App im Hintergrund aktualisiert. Das Aktualisierungsintervall wird im Hintergrund aufgrund der Funktionsweise von iOS bei Hintergrundaufgaben nicht berücksichtigt."
+          }
+        }
+      }
+    },
+    "Dashboard" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übersicht"
+          }
+        }
+      }
+    },
+    "Data & Credentials" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Daten & Zugangsdaten"
+          }
+        }
+      }
+    },
+    "Display" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anzeige"
+          }
+        }
+      }
+    },
+    "Email" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail"
+          }
+        }
+      }
+    },
+    "Error" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fehler"
+          }
+        }
+      }
+    },
+    "Failed to parse response: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Antwort konnte nicht verarbeitet werden: %@"
+          }
+        }
+      }
+    },
+    "Failed to write to HealthKit: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schreiben in HealthKit fehlgeschlagen: %@"
+          }
+        }
+      }
+    },
+    "Falling" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fallend"
+          }
+        }
+      }
+    },
+    "Falling Quickly" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schnell fallend"
+          }
+        }
+      }
+    },
+    "FAQ" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "FAQ"
+          }
+        }
+      }
+    },
+    "For liability reasons and because it would likely be rejected, because it declares that it needs the Audio playback Background Capability, in order to make iOS update from LibreLinkUp on an exacting schedule." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus Haftungsgründen und weil sie wahrscheinlich abgelehnt würde, da sie die Hintergrundfunktion für die Audiowiedergabe beansprucht, um iOS dazu zu bringen, nach einem genauen Zeitplan von LibreLinkUp zu aktualisieren."
+          }
+        }
+      }
+    },
+    "Glucose Unit" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blutzuckereinheit"
+          }
+        }
+      }
+    },
+    "HealthKit is not available on this device." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HealthKit ist auf diesem Gerät nicht verfügbar."
+          }
+        }
+      }
+    },
+    "How much data can this app sync from LibreLinkUp?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wie viele Daten kann diese App von LibreLinkUp synchronisieren?"
+          }
+        }
+      }
+    },
+    "Incorrect email or password." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Falsche E-Mail-Adresse oder falsches Passwort."
+          }
+        }
+      }
+    },
+    "Invalid API URL." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ungültige API-URL."
+          }
+        }
+      }
+    },
+    "Invalid HealthKit quantity type." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ungültiger HealthKit-Datentyp."
+          }
+        }
+      }
+    },
+    "Invalid response from server." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ungültige Antwort vom Server."
+          }
+        }
+      }
+    },
+    "iOS always removes Live Activities after 8 hours. This is a limitation imposed by iOS. Just reopen the app and background it again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS entfernt Live-Aktivitäten immer nach 8 Stunden. Dies ist eine Einschränkung von iOS. Öffne die App einfach erneut und lege sie wieder in den Hintergrund."
+          }
+        }
+      }
+    },
+    "iOS updates the value on the Live Activity when it feels like it, basically. In my experiences the update schedule is quite erratic and it can sometimes go hours without updating." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "iOS aktualisiert den Wert der Live-Aktivität im Grunde nach eigenem Ermessen. Meiner Erfahrung nach ist der Aktualisierungsrhythmus ziemlich unregelmäßig und es kann manchmal Stunden dauern, bis eine Aktualisierung erfolgt."
+          }
+        }
+      }
+    },
+    "Last sync:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzte Synchronisierung:"
+          }
+        }
+      }
+    },
+    "LibreHealth Sync" : {
+      "shouldTranslate" : false
+    },
+    "LibreLinkUp Credentials" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LibreLinkUp-Zugangsdaten"
+          }
+        }
+      }
+    },
+    "LibreLinkUp is rate limiting this account. Try again in %lld seconds." : {
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "LibreLinkUp begrenzt derzeit die Anfragen für dieses Konto. Versuche es in %lld Sekunde erneut."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "LibreLinkUp begrenzt derzeit die Anfragen für dieses Konto. Versuche es in %lld Sekunden erneut."
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "LibreLinkUp is rate limiting this account. Try again in a few minutes." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LibreLinkUp begrenzt derzeit die Anfragen für dieses Konto. Versuche es in ein paar Minuten erneut."
+          }
+        }
+      }
+    },
+    "LibreLinkUp returned HTTP %lld." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LibreLinkUp hat HTTP %lld zurückgegeben."
+          }
+        }
+      }
+    },
+    "LibreLinkUp returned status %lld%@." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "LibreLinkUp hat Status %1$lld%2$@ zurückgegeben."
+          }
+        }
+      }
+    },
+    "Live Activity Staleness" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktualität der Live-Aktivität"
+          }
+        }
+      }
+    },
+    "Log In" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anmelden"
+          }
+        }
+      }
+    },
+    "Log Out" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abmelden"
+          }
+        }
+      }
+    },
+    "Network error: %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Netzwerkfehler: %@"
+          }
+        }
+      }
+    },
+    "Next sync in %llds" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächste Synchronisierung in %lld s"
+          }
+        }
+      }
+    },
+    "No auth ticket in response." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Authentifizierungs-Ticket in der Antwort."
+          }
+        }
+      }
+    },
+    "No data returned from server." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Daten vom Server erhalten."
+          }
+        }
+      }
+    },
+    "No data yet" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Daten"
+          }
+        }
+      }
+    },
+    "No relogin handler configured." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Handler für die erneute Anmeldung konfiguriert."
+          }
+        }
+      }
+    },
+    "No stored credentials for re-login." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine gespeicherten Zugangsdaten für die erneute Anmeldung."
+          }
+        }
+      }
+    },
+    "No user info in response." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Benutzerinformationen in der Antwort."
+          }
+        }
+      }
+    },
+    "No Warranty" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Gewährleistung"
+          }
+        }
+      }
+    },
+    "Not a Medical Device" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Medizinprodukt"
+          }
+        }
+      }
+    },
+    "Not Determined" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht bestimmt"
+          }
+        }
+      }
+    },
+    "Not synced yet" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch nicht synchronisiert"
+          }
+        }
+      }
+    },
+    "OK" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        }
+      }
+    },
+    "Password" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passwort"
+          }
+        }
+      }
+    },
+    "Please read and accept the following before using this app." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bitte lies und akzeptiere die folgenden Bedingungen, bevor du diese App verwendest."
+          }
+        }
+      }
+    },
+    "Readings written:" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geschriebene Messwerte:"
+          }
+        }
+      }
+    },
+    "Recent Readings" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letzte Messwerte"
+          }
+        }
+      }
+    },
+    "Red border after %lld min" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Roter Rahmen nach %lld Min."
+          }
+        }
+      }
+    },
+    "Region" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Region"
+          }
+        }
+      }
+    },
+    "Rising" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Steigend"
+          }
+        }
+      }
+    },
+    "Rising Quickly" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schnell steigend"
+          }
+        }
+      }
+    },
+    "Server redirected to %@ repeatedly." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Server hat wiederholt an %@ weitergeleitet."
+          }
+        }
+      }
+    },
+    "Server Region" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serverregion"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen"
+          }
+        }
+      }
+    },
+    "Stable" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stabil"
+          }
+        }
+      }
+    },
+    "Sync Now" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jetzt synchronisieren"
+          }
+        }
+      }
+    },
+    "Sync Status" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronisierungsstatus"
+          }
+        }
+      }
+    },
+    "Syncing..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Synchronisiere …"
+          }
+        }
+      }
+    },
+    "Terms of Use" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzungsbedingungen"
+          }
+        }
+      }
+    },
+    "The LibreLinkUp API presents 12-16 hours of data at any one time. The app will attempt to sync as much data as the API provides it." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die LibreLinkUp-API stellt jeweils Daten der letzten 12–16 Stunden bereit. Die App versucht, so viele Daten zu synchronisieren, wie die API liefert."
+          }
+        }
+      }
+    },
+    "This app is not a medical device and must not be used to make medical decisions. Always rely on your official glucose monitor and consult your healthcare provider for medical guidance." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App ist kein Medizinprodukt und darf nicht für medizinische Entscheidungen verwendet werden. Verlasse dich stets auf dein offizielles Blutzuckermessgerät und ziehe für medizinischen Rat ärztliches Fachpersonal hinzu."
+          }
+        }
+      }
+    },
+    "This app is provided \"as is\" without warranty of any kind. The developer assumes no liability for any damages or issues arising from its use." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App wird „wie besehen“ und ohne jegliche Gewährleistung bereitgestellt. Der Entwickler übernimmt keine Haftung für Schäden oder Probleme, die aus der Nutzung entstehen."
+          }
+        }
+      }
+    },
+    "This app is to fill in a couple of feature gaps in Abbott's official app, specifically that I want to sync my blood glucose data into HealthKit, and I want a Live Activity that shows my current blood glucose reading. Both of these features were inspired by the [GlucoseDirect](https://github.com/creepymonster/GlucoseDirect) app. This app's purpose is much more focused than GlucoseDirect. If Abbott added these features to its own app, I would happily delete this one." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App schließt einige Funktionslücken in der offiziellen App von Abbott: Insbesondere möchte ich meine Blutzuckerdaten mit HealthKit synchronisieren und eine Live-Aktivität nutzen, die meinen aktuellen Blutzuckerwert anzeigt. Beide Funktionen wurden von der App [GlucoseDirect](https://github.com/creepymonster/GlucoseDirect) inspiriert. Der Zweck dieser App ist jedoch deutlich fokussierter als bei GlucoseDirect. Wenn Abbott diese Funktionen in seine eigene App integrieren würde, würde ich diese hier sofort löschen."
+          }
+        }
+      }
+    },
+    "This app uses an unofficial, reverse-engineered Abbott LibreLinkUp API. It is not affiliated with, endorsed by, or supported by Abbott Laboratories. The API may change or stop working at any time without notice." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App verwendet eine inoffizielle, durch Reverse Engineering erschlossene LibreLinkUp-API von Abbott. Sie steht in keiner Verbindung zu Abbott Laboratories und wird von Abbott Laboratories weder unterstützt noch befürwortet. Die API kann sich jederzeit ohne Vorankündigung ändern oder den Betrieb einstellen."
+          }
+        }
+      }
+    },
+    "This app uses the unofficial LibreLinkUp API. It may stop working if Abbott changes their API." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese App verwendet die inoffizielle LibreLinkUp-API. Sie funktioniert möglicherweise nicht mehr, wenn Abbott seine API ändert."
+          }
+        }
+      }
+    },
+    "United States" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vereinigte Staaten"
+          }
+        }
+      }
+    },
+    "Unknown" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannt"
+          }
+        }
+      }
+    },
+    "Unknown error" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannter Fehler"
+          }
+        }
+      }
+    },
+    "Unofficial API" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inoffizielle API"
+          }
+        }
+      }
+    },
+    "Use at Your Own Risk" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nutzung auf eigene Gefahr"
+          }
+        }
+      }
+    },
+    "Version" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
+          }
+        }
+      }
+    },
+    "What is this app for?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wozu dient diese App?"
+          }
+        }
+      }
+    },
+    "Why does the Live Activity disappear eventually?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warum verschwindet die Live-Aktivität irgendwann?"
+          }
+        }
+      }
+    },
+    "Why doesn't the Live Activity update regularly?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warum wird die Live-Aktivität nicht regelmäßig aktualisiert?"
+          }
+        }
+      }
+    },
+    "Why is this not on the App Store?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warum gibt es diese App nicht im App Store?"
+          }
+        }
+      }
+    },
+    "You must accept the Terms of Use in the LibreLinkUp app before continuing." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du musst die Nutzungsbedingungen in der LibreLinkUp-App akzeptieren, bevor du fortfahren kannst."
+          }
+        }
+      }
+    },
+    "Your account is on the %@ LibreLinkUp server, which this app doesn't support yet." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dein Konto befindet sich auf dem %@-LibreLinkUp-Server, der von dieser App noch nicht unterstützt wird."
+          }
+        }
+      }
+    },
+    "Your LibreLinkUp credentials are stored locally in the iOS Keychain on your device. Glucose data is transmitted to and from Abbott's servers as part of the normal LibreLinkUp API flow." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine LibreLinkUp-Zugangsdaten werden lokal im iOS-Schlüsselbund auf deinem Gerät gespeichert. Blutzuckerdaten werden im Rahmen des normalen LibreLinkUp-API-Ablaufs an die und von den Servern von Abbott übertragen."
+          }
+        }
+      }
+    },
+    "Your LibreLinkUp session expired and could not be renewed. Please log out and log in again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine LibreLinkUp-Sitzung ist abgelaufen und konnte nicht erneuert werden. Bitte melde dich ab und wieder an."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

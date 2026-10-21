@@ -77,15 +77,25 @@ struct SettingsView: View {
                 HStack {
                     Text("Version")
                     Spacer()
-                    Text(Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown")
-                        .foregroundStyle(.secondary)
+                    if let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String {
+                        Text(verbatim: version)
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text("Unknown")
+                            .foregroundStyle(.secondary)
+                    }
                 }
 
                 HStack {
                     Text("Build")
                     Spacer()
-                    Text(Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown")
-                        .foregroundStyle(.secondary)
+                    if let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+                        Text(verbatim: build)
+                            .foregroundStyle(.secondary)
+                    } else {
+                        Text("Unknown")
+                            .foregroundStyle(.secondary)
+                    }
                 }
 
                 Text("This app uses the unofficial LibreLinkUp API. It may stop working if Abbott changes their API.")
