@@ -22,7 +22,7 @@ nonisolated enum LibreLinkUpRegion: String, CaseIterable, Identifiable, Codable 
 
     var displayName: String {
         switch self {
-        case .us: return "United States"
+        case .us: return String(localized: "United States")
 //        only deal with US at the moment because I have no way of testing other regions
 //        case .eu: return "Europe"
 //        case .de: return "Germany"
@@ -190,6 +190,17 @@ nonisolated enum TrendArrowDirection: Int, CaseIterable, Sendable {
         case .stable: return "Stable"
         case .rising: return "Rising"
         case .risingQuickly: return "Rising Quickly"
+        }
+    }
+
+    var localizedDescription: String {
+        switch self {
+        case .notDetermined: return String(localized: "Not Determined")
+        case .fallingQuickly: return String(localized: "Falling Quickly")
+        case .falling: return String(localized: "Falling")
+        case .stable: return String(localized: "Stable")
+        case .rising: return String(localized: "Rising")
+        case .risingQuickly: return String(localized: "Rising Quickly")
         }
     }
 }

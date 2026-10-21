@@ -34,12 +34,12 @@ enum GlucoseDisplayHelpers {
 
     static func trendDescription(rawValue: Int) -> String {
         switch rawValue {
-        case 1: return "Falling Quickly"
-        case 2: return "Falling"
-        case 3: return "Stable"
-        case 4: return "Rising"
-        case 5: return "Rising Quickly"
-        default: return "Not Determined"
+        case 1: return String(localized: "Falling Quickly")
+        case 2: return String(localized: "Falling")
+        case 3: return String(localized: "Stable")
+        case 4: return String(localized: "Rising")
+        case 5: return String(localized: "Rising Quickly")
+        default: return String(localized: "Not Determined")
         }
     }
 }

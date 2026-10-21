@@ -107,7 +107,7 @@ actor SyncService {
     /// Attempt to re-authenticate with stored credentials.
     func relogin() async throws {
         guard let reloginHandler else {
-            throw LibreLinkUpError.authenticationFailed("No relogin handler configured.")
+            throw LibreLinkUpError.authenticationFailed(String(localized: "No relogin handler configured."))
         }
         try await reloginHandler()
     }

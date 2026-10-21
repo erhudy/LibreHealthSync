@@ -54,7 +54,7 @@ struct TermsOfUseView: View {
         }
     }
 
-    private func disclaimerSection(title: String, text: String) -> some View {
+    private func disclaimerSection(title: LocalizedStringKey, text: LocalizedStringKey) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
                 .font(.headline)

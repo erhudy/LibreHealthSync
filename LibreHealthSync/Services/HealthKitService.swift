@@ -120,13 +120,13 @@ enum HealthKitError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .notAvailable:
-            return "HealthKit is not available on this device."
+            return String(localized: "HealthKit is not available on this device.")
         case .invalidType:
-            return "Invalid HealthKit quantity type."
+            return String(localized: "Invalid HealthKit quantity type.")
         case .writeAccessDenied:
-            return "Apple Health write access is turned off. Enable Blood Glucose for LibreHealth Sync under Settings > Health > Data Access & Devices."
+            return String(localized: "Apple Health write access is turned off. Enable Blood Glucose for LibreHealth Sync under Settings > Health > Data Access & Devices.")
         case .writeFailed(let error):
-            return "Failed to write to HealthKit: \(error.localizedDescription)"
+            return String(localized: "Failed to write to HealthKit: \(error.localizedDescription)")
         }
     }
 }
